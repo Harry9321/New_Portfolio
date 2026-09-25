@@ -1,100 +1,180 @@
-# Hariom Sahu — Portfolio
+<div align="center">
 
-Personal site with projects, demo videos and a blog. Plain **HTML, CSS and JavaScript**: no framework, no build step, free to host.
+# Hariom Sahu
 
-## Structure
+**Software Engineer · Backend Systems & AI Applications**
 
-```
-index.html                 Home: hero, about, experience, featured projects, latest posts, contact
-projects/index.html        All projects, filterable by type
-blog/index.html            All posts, filterable by tag
-blog/post.html             Renders a single post (?slug=...)
-blog/posts/*.md            Your posts, written in Markdown
-data/projects.json         ← add projects here
-data/posts.json            ← list posts here
-assets/css/styles.css      Design tokens, layout, light + dark themes
-assets/js/site.js          All behaviour (one file, no dependencies)
-assets/img/                Images: projects/, blog/
-```
+Mumbai, India · Open to new opportunities
 
-## Deploy for free (GitHub Pages)
+[**Visit the website →**](https://harry9321.github.io/New_Portfolio/)
+&nbsp;·&nbsp; [Projects](https://harry9321.github.io/New_Portfolio/projects/)
+&nbsp;·&nbsp; [Blog](https://harry9321.github.io/New_Portfolio/blog/)
+&nbsp;·&nbsp; [LinkedIn](https://linkedin.com/in/hariom-dev)
+&nbsp;·&nbsp; [Email](mailto:hariomsahu.dev@gmail.com)
 
-1. In the repo, open **Settings → Pages**.
-2. Under **Build and deployment**, set Source to **Deploy from a branch**, then choose `main` and `/ (root)`. Save.
-3. After a minute or two the site is live at **https://harry9321.github.io/New_Portfolio/**.
+</div>
 
-Every push to `main` redeploys automatically. For a custom domain later, add it in the same Pages screen. The site uses relative links, so it works at any address.
+![Home page of the portfolio](docs/screenshots/home.webp)
 
-## Add a project
+This repository is my personal website. The README walks through the site page by page, so you can see everything here without opening it.
 
-Add an entry to `data/projects.json`. Order in the file = order on the site.
+---
 
-```json
-{
-  "id": "my-project",
-  "title": "My Project",
-  "type": "Personal",
-  "year": "2026",
-  "category": "GenAI · Tooling",
-  "summary": "One or two sentences on what it is and why it matters.",
-  "highlights": ["What you built.", "A hard problem you solved.", "A result."],
-  "tags": ["Python", "FastAPI", "React"],
-  "kpi": { "value": "10×", "label": "faster than before" },
-  "image": "assets/img/projects/my-project.png",
-  "links": {
-    "demo": "https://my-project.vercel.app",
-    "video": "https://www.youtube.com/watch?v=VIDEO_ID",
-    "source": "https://github.com/Harry9321/my-project"
-  },
-  "featured": true
-}
-```
+## Contents
 
-- **type** becomes a filter chip on the Projects page (e.g. `Professional`, `Personal`, `Open source`, `Hackathon`).
-- **featured: true** shows it on the home page (the first 4 featured are shown).
-- **links**: leave any empty (`""`) and its button is hidden.
-- **video** accepts YouTube, Vimeo, Loom, Google Drive, or a direct `.mp4` / `.webm` link. It plays in a pop-up player.
-- **image** is optional. Without one, a YouTube video's thumbnail is used; without either, a clean cover is drawn from `kpi`.
-- **confidential: true** shows "Proprietary · details on request" when there are no public links.
+1. [At a glance](#at-a-glance)
+2. [Tour of the website](#tour-of-the-website)
+   - [Home](#1-home)
+   - [About](#2-about-how-i-work)
+   - [Experience](#3-experience)
+   - [Projects](#4-projects)
+   - [Blog](#5-blog)
+   - [Contact](#6-contact)
+   - [Dark mode and mobile](#dark-mode-and-mobile)
+3. [Projects in detail](#projects-in-detail)
+4. [Skills](#skills)
+5. [How this site is built](#how-this-site-is-built)
 
-**Demo videos:** upload them to YouTube as *Unlisted* (free, fast, no size limit) and paste the link. Keep large video files out of the repo; GitHub Pages has a 1 GB site limit.
+---
 
-**Screenshots:** 1600×900 (16:9) PNG or WebP works best.
+## At a glance
 
-## Write a blog post
+I design and ship high-throughput distributed systems and production GenAI applications at **Multi Commodity Exchange (MCX)**, India's largest commodity exchange, on a platform serving **100M+ users**.
 
-1. Copy `blog/posts/_template.md` to `blog/posts/my-post-slug.md` and write in Markdown.
-2. Add it to `data/posts.json`:
+| Result | What changed |
+|---|---|
+| **92.5% faster** file validation | 40 minutes → 3 minutes, by re-architecting a monolith into a Celery / Redis pipeline |
+| **50% lower** API search latency | Query optimisation, schema redesign and B-Tree indexing |
+| **40% lower** RAG pipeline latency | 5-way parallel retrieval with neural reranking |
+| **100M+ users** | Served by the REST APIs I've shipped |
 
-```json
-[
-  {
-    "slug": "my-post-slug",
-    "title": "From 40 minutes to 3: re-architecting a validation monolith",
-    "date": "2026-10-01",
-    "summary": "One line that makes people want to read it.",
-    "tags": ["Performance", "Celery"]
-  }
-]
-```
+---
 
-Posts are sorted newest first automatically. Add `"draft": true` to hide a post while you're writing it. The home page shows the latest 3; the "Writing" section stays hidden until you publish your first post.
+## Tour of the website
 
-Markdown supports headings, code blocks with syntax highlighting, tables, quotes and images (`../assets/img/blog/file.png`). To embed a video in a post:
+The site has three pages: **Home**, **Projects** and **Blog**. The header on every page links to all of them, and the sun/moon button switches between light and dark themes.
 
-```html
-<div class="embed" data-video="https://www.youtube.com/watch?v=VIDEO_ID"></div>
-```
+### 1. Home
 
-## Run locally
+[Open ↗](https://harry9321.github.io/New_Portfolio/)
 
-Pages load their content from the JSON files, so use a local server rather than opening the file directly:
+The first screen says what I do in one line, shows my availability, and gives two actions: **See my projects** and email me. Below that, four headline metrics count up as you scroll into view.
+
+### 2. About: how I work
+
+[Open ↗](https://harry9321.github.io/New_Portfolio/#about)
+
+![About section](docs/screenshots/about.webp)
+
+A short statement of what I work on, then the three principles I build by:
+
+1. **Design for the failure mode.** Traffic spikes, partial outages and bad input will happen, so guardrails and observability ship with the first version.
+2. **Measure, then optimise.** Query plans, latency percentiles and profiler output decide the redesign.
+3. **Ship systems people can trust.** Reliability and safety are requirements, from JWT-gated gateways to LLM guardrails.
+
+It closes with my **toolbox** of languages, databases and infrastructure.
+
+### 3. Experience
+
+[Open ↗](https://harry9321.github.io/New_Portfolio/#experience)
+
+![Experience section](docs/screenshots/experience.webp)
+
+**Software Engineer, Multi Commodity Exchange** (Jun 2025 – Present)
+- Re-architected a legacy monolith into a distributed Python / Celery / Redis pipeline: file validation went from **40 to 3 minutes**.
+- Built a real-time **Kafka** ETL pipeline and anomaly-detection engine for suspicious trading behaviour.
+- Halved API search latency through SQL optimisation, schema redesign and indexing.
+- Designed a custom **Nginx API gateway** with JWT auth and rate limiting.
+- Hardened UAT / pre-prod environments with Redis, reverse proxies and end-to-end observability.
+- Built internal automation tools adopted company-wide.
+
+**B.E., Computer Engineering, A. P. Shah Institute of Technology, University of Mumbai** (2021 – 2025, CGPA 8.7/10)
+AWS Academy Cloud Foundations · AWS Academy ML Foundations · Cisco Networking Essentials
+
+### 4. Projects
+
+[Open ↗](https://harry9321.github.io/New_Portfolio/projects/)
+
+![Projects page](docs/screenshots/projects.webp)
+
+Every project is a card showing:
+- its **headline result** (or a screenshot or video thumbnail),
+- a one-line summary and the tech used,
+- **What I did**, a section that expands to show the details,
+- buttons for **Live demo**, **Watch demo** (plays in a pop-up player) and **Source**, where available.
+
+Filter chips at the top sort projects by type (Professional, Personal, …). Four featured projects also appear on the home page.
+
+### 5. Blog
+
+[Open ↗](https://harry9321.github.io/New_Portfolio/blog/)
+
+![Blog page](docs/screenshots/blog.webp)
+
+Write-ups on distributed pipelines, performance work and shipping GenAI in production. Posts can be filtered by tag, and each post page shows the reading time, highlighted code, tables, images, embedded videos, and links to the next and previous posts. The three latest posts also appear on the home page.
+
+### 6. Contact
+
+[Open ↗](https://harry9321.github.io/New_Portfolio/#contact)
+
+![Contact section](docs/screenshots/contact.webp)
+
+Email (with a one-click **Copy** button), LinkedIn, GitHub and phone.
+
+### Dark mode and mobile
+
+| Dark mode | Mobile |
+|---|---|
+| ![Dark mode](docs/screenshots/home-dark.webp) | <img src="docs/screenshots/mobile.webp" alt="Mobile view" width="260" /> |
+
+The site follows your system's light or dark setting, and the header toggle overrides it. On phones the navigation folds into a menu button.
+
+---
+
+## Projects in detail
+
+| Project | What it is | Result | Stack |
+|---|---|---|---|
+| **CSQ AI Engine** | Production RAG chat and agentic app for a regulated financial environment | −40% end-to-end latency | Python, FastAPI, RAG, vector search, LLM guardrails |
+| **Real-time anomaly detection engine** | Kafka pipeline that flags suspicious trading activity and sends multi-channel alerts | Live market surveillance | Kafka, Python, Redis |
+| **Distributed file validation pipeline** | Sequential monolith rebuilt as a parallel task-queue system | 40 → 3 minutes per run | Celery, Redis, Python, PostgreSQL |
+| **Custom Nginx API gateway** | Hardened edge layer with JWT auth and rate limiting | Downstream services protected from spikes | Nginx, JWT, AWS |
+
+These are internal systems at MCX, so their code and demos aren't public. Details are available on request. New side projects with live demos and videos will be added to the [Projects page](https://harry9321.github.io/New_Portfolio/projects/).
+
+---
+
+## Skills
+
+**Languages:** Python · Java · TypeScript
+**Backend:** FastAPI · Node.js · SQLAlchemy · Celery
+**Data:** PostgreSQL · MongoDB · Redis · Kafka
+**Infrastructure:** Docker · AWS · Nginx · CI/CD
+**AI:** RAG pipelines · vector search · neural reranking · LLM guardrails
+
+---
+
+## How this site is built
+
+Plain **HTML, CSS and JavaScript**, with no framework and no build step. It's hosted for free on **GitHub Pages**.
+
+- Content lives in two data files, `data/projects.json` and `data/posts.json`, and blog posts are Markdown files in `blog/posts/`.
+- Light and dark themes, responsive down to small phones, keyboard-accessible, and all motion is turned off for visitors who prefer reduced motion.
+
+**Run it locally**
 
 ```bash
-python3 -m http.server 8000
-# open http://localhost:8000
+git clone https://github.com/Harry9321/New_Portfolio.git
+cd New_Portfolio
+python -m http.server 8000     # then open http://localhost:8000
 ```
 
-## Edit the design
+To add projects, blog posts or demo videos, or to deploy, see the **[maintainer guide](docs/CONTENT.md)**.
 
-Colours, fonts and spacing are tokens at the top of `assets/css/styles.css` (`--accent`, `--bg`, …), with dark-mode values right below. The theme follows the visitor's system setting; the header toggle overrides it.
+---
+
+<div align="center">
+
+**Let's talk:** [hariomsahu.dev@gmail.com](mailto:hariomsahu.dev@gmail.com) · [LinkedIn](https://linkedin.com/in/hariom-dev) · [GitHub](https://github.com/Harry9321)
+
+</div>
