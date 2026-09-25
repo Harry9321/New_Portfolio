@@ -128,7 +128,7 @@ Write-ups on distributed pipelines, performance work and shipping GenAI in produ
 
 ![Contact section](docs/screenshots/contact.webp)
 
-My email (with a one-click **Copy** button), then icon tiles for **GitHub, LinkedIn, X (Twitter), phone and email**. Hovering over a tile fills it with the brand's colour, shows a label with the handle or number, and the tile pulls gently toward your cursor.
+My email (with a one-click **Copy** button), then full-colour app-style tiles for **GitHub, LinkedIn, X (Twitter), phone and Gmail**. Hovering over a tile makes it lift, tilt and glow in its brand colour with a shine sweep, shows a label with the handle or number, and the tile pulls gently toward your cursor.
 
 ### Dark mode and mobile
 
