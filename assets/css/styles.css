@@ -1766,58 +1766,57 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1
 @keyframes prompt-blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .prompt-caret { animation: none; } }
 
-/* ---------- Handwritten logo:  Hs.  (writes itself in, dot bounces) ---------- */
-@font-face {
-  font-family: "Parisienne";
-  src: url("../fonts/parisienne.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
-.brand { padding: 0 6px 0 4px; border-radius: 10px; }
-.brand-hs {
+/* ---------- Terminal logo:  ~/hs ▌  (types ~/hariom-sahu on hover) ---------- */
+.brand { padding: 0; border-radius: 10px; }
+.brand-term {
   display: inline-flex;
-  align-items: baseline;
-  height: 44px;
-  line-height: 1;
-  transition: transform 0.45s cubic-bezier(0.3, 1.5, 0.5, 1);
-}
-.hs-text {
-  font-family: "Parisienne", "Segoe Script", cursive;
-  font-size: 38px;
+  align-items: center;
+  height: 38px;
+  padding: 0 12px 0 11px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--ink);
-  padding: 4px 2px 0 2px;
-  /* "writes" left to right on load */
-  clip-path: inset(0 100% 0 0);
-  animation: hs-write 1.1s cubic-bezier(0.55, 0.1, 0.35, 1) 0.2s forwards;
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  white-space: nowrap;
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
 }
-.hs-dot {
-  width: 7px;
-  height: 7px;
-  margin-left: 1px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent);
-  transform: translateY(-26px) scale(0);
-  animation: hs-drop 0.7s cubic-bezier(0.3, 1.8, 0.5, 1) 1.2s forwards;
+.bt-path { color: var(--accent); margin-right: 1px; }
+.bt-short, .bt-full { display: inline-block; overflow: hidden; vertical-align: bottom; }
+.bt-short {
+  width: 2ch;
+  animation: bt-type 0.5s steps(2, end) 0.3s both;
 }
-@keyframes hs-write { to { clip-path: inset(0 -10% 0 0); } }
-@keyframes hs-drop {
-  0%   { transform: translateY(-26px) scale(0.4); }
-  60%  { transform: translateY(0) scale(1.15, 0.85); }
-  100% { transform: translateY(0) scale(1); }
+.bt-full { max-width: 0; }
+.bt-caret {
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  animation: prompt-blink 1.05s steps(1) infinite;
 }
-.brand:hover .brand-hs, .brand:focus-visible .brand-hs { transform: rotate(-5deg) scale(1.06); }
-.brand:hover .hs-dot, .brand:focus-visible .hs-dot { animation: hs-bounce 0.8s cubic-bezier(0.3, 1.6, 0.5, 1); transform: none; box-shadow: 0 0 10px 1px color-mix(in srgb, var(--accent) 60%, transparent); }
-@keyframes hs-bounce {
-  0%   { transform: translateY(0); }
-  35%  { transform: translateY(-12px); }
-  60%  { transform: translateY(0) scale(1.2, 0.8); }
-  80%  { transform: translateY(-4px); }
-  100% { transform: translateY(0); }
+@keyframes bt-type { from { width: 0; } }
+
+/* Hover: autocomplete ~/hs → ~/hariom-sahu */
+.brand:hover .brand-term, .brand:focus-visible .brand-term {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow: 0 6px 18px -10px var(--accent);
 }
+.brand:hover .bt-short, .brand:focus-visible .bt-short { width: 0; animation: none; }
+.brand:hover .bt-full, .brand:focus-visible .bt-full {
+  max-width: 11ch;
+  transition: max-width 0.55s steps(11, end);
+}
+.brand:hover .bt-caret { animation: none; }
+
 @media (prefers-reduced-motion: reduce) {
-  .hs-text { clip-path: none; animation: none; }
-  .hs-dot { transform: none; animation: none; }
+  .bt-short { animation: none; }
+  .bt-caret { animation: none; }
+  .brand:hover .bt-full { transition: none; }
 }
-@media (max-width: 760px) { .hs-text { font-size: 34px; } .brand-hs { height: 40px; } }
+@media (max-width: 760px) { .brand-term { height: 36px; font-size: 15px; } }
