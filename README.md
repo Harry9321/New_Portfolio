@@ -58,7 +58,7 @@ The site has three pages: **Home**, **Projects** and **Blog**. The header on eve
 
 [Open ↗](https://harry9321.github.io/New_Portfolio/)
 
-The first screen says what I do in one line, shows my availability, and gives two actions: **See my projects** and email me. Below that, four headline metrics count up as you scroll into view.
+The first screen opens with **"Hi! I am Hariom Sahu."**, says what I do in one line, shows my availability, and gives two actions: **See my projects** and email me. The menu bar floats centred at the top of every page.
 
 ### 2. About: how I work
 
@@ -81,6 +81,10 @@ It closes with my **toolbox** of languages, databases and infrastructure.
 ![Experience section](docs/screenshots/experience.webp)
 
 **Software Engineer, Multi Commodity Exchange** (Jun 2025 – Present)
+
+Key achievements (shown as tiles that count up as you scroll): **92.5%** faster file validation · **50%** lower API search latency · **40%** lower RAG pipeline latency · **100M+** users on shipped APIs.
+
+What I worked on:
 - Re-architected a legacy monolith into a distributed Python / Celery / Redis pipeline: file validation went from **40 to 3 minutes**.
 - Built a real-time **Kafka** ETL pipeline and anomaly-detection engine for suspicious trading behaviour.
 - Halved API search latency through SQL optimisation, schema redesign and indexing.

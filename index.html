@@ -21,7 +21,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" id="top">
-    <div class="container header-inner">
+    <div class="header-inner">
       <a class="brand" href="./" aria-label="Hariom Sahu, home">
         <span class="brand-mark" aria-hidden="true">HS</span>
         <span class="brand-name">Hariom Sahu</span>
@@ -50,10 +50,11 @@
     <section class="hero">
       <div class="container">
         <p class="status reveal"><span class="dot" aria-hidden="true"></span>Open to new opportunities · Mumbai, India</p>
+        <p class="hero-hello reveal">Hi! I am <strong>Hariom Sahu</strong>.</p>
         <h1 class="hero-title reveal">I build backend systems that <em>stay fast</em> when the load doesn't stay small.</h1>
         <p class="hero-lede reveal">
           Software Engineer at Multi Commodity Exchange. I design distributed data pipelines, streaming systems,
-          and production GenAI applications for a platform serving 100M+ users.
+          and production GenAI applications.
         </p>
         <div class="hero-cta reveal">
           <a class="btn btn-primary" href="projects/">See my projects
@@ -62,24 +63,6 @@
           <a class="btn btn-ghost" href="mailto:hariomsahu.dev@gmail.com">hariomsahu.dev@gmail.com</a>
         </div>
 
-        <dl class="metrics reveal">
-          <div class="metric">
-            <dt>File validation time</dt>
-            <dd><span class="count" data-to="92.5" data-decimals="1">92.5</span>%<small>faster · 40 min → 3 min</small></dd>
-          </div>
-          <div class="metric">
-            <dt>API search latency</dt>
-            <dd><span class="count" data-to="50">50</span>%<small>lower via indexing &amp; query redesign</small></dd>
-          </div>
-          <div class="metric">
-            <dt>RAG pipeline latency</dt>
-            <dd><span class="count" data-to="40">40</span>%<small>lower with 5-way parallel retrieval</small></dd>
-          </div>
-          <div class="metric">
-            <dt>Users on shipped APIs</dt>
-            <dd><span class="count" data-to="100">100</span>M+<small>on India's largest commodity exchange</small></dd>
-          </div>
-        </dl>
       </div>
     </section>
 
@@ -138,6 +121,28 @@
               <p class="when">Jun 2025 — Present</p>
             </header>
             <p class="role-summary">Production REST APIs and distributed data pipelines for client lifecycle management on India's largest commodity exchange.</p>
+
+            <h4 class="role-subhead">Key achievements</h4>
+            <dl class="metrics metrics-inline">
+              <div class="metric">
+                <dt>File validation time</dt>
+                <dd><span class="count" data-to="92.5" data-decimals="1">92.5</span>%<small>faster · 40 min → 3 min</small></dd>
+              </div>
+              <div class="metric">
+                <dt>API search latency</dt>
+                <dd><span class="count" data-to="50">50</span>%<small>lower via indexing &amp; query redesign</small></dd>
+              </div>
+              <div class="metric">
+                <dt>RAG pipeline latency</dt>
+                <dd><span class="count" data-to="40">40</span>%<small>lower with 5-way parallel retrieval</small></dd>
+              </div>
+              <div class="metric">
+                <dt>Users on shipped APIs</dt>
+                <dd><span class="count" data-to="100">100</span>M+<small>on India's largest commodity exchange</small></dd>
+              </div>
+            </dl>
+
+            <h4 class="role-subhead">What I worked on</h4>
             <ul class="bullets">
               <li>Re-architected a legacy monolith into a distributed Python / Celery / Redis pipeline, cutting file validation from <strong>40 to 3 minutes</strong>.</li>
               <li>Built a real-time Kafka ETL pipeline and anomaly-detection engine that raises multi-channel alerts on suspicious trading behaviour.</li>
