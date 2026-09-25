@@ -452,6 +452,23 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Contact icons: gentle magnetic pull toward the pointer
+   * ------------------------------------------------------------------ */
+  if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+    $$(".social").forEach(function (el) {
+      el.addEventListener("pointermove", function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty("--tx", ((e.clientX - r.left - r.width / 2) * 0.25).toFixed(1) + "px");
+        el.style.setProperty("--ty", ((e.clientY - r.top - r.height / 2) * 0.25 - 4).toFixed(1) + "px");
+      });
+      el.addEventListener("pointerleave", function () {
+        el.style.setProperty("--tx", "0px");
+        el.style.setProperty("--ty", "0px");
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------ *
    * Cursor trail: a flock of small curvy arrows that flow off the cursor
    * Desktop only (fine pointer); off when reduced motion is requested.
    * ------------------------------------------------------------------ */

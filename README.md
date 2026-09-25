@@ -128,7 +128,7 @@ Write-ups on distributed pipelines, performance work and shipping GenAI in produ
 
 ![Contact section](docs/screenshots/contact.webp)
 
-Email (with a one-click **Copy** button), LinkedIn, GitHub and phone.
+My email (with a one-click **Copy** button), then icon tiles for **GitHub, LinkedIn, X (Twitter), phone and email**. Hovering over a tile fills it with the brand's colour, shows a label with the handle or number, and the tile pulls gently toward your cursor.
 
 ### Dark mode and mobile
 
