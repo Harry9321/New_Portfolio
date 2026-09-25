@@ -452,10 +452,10 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * Cursor trail: a light, curvy arrow that follows the mouse
+   * Cursor trail: a flock of small curvy arrows that flow off the cursor
    * Desktop only (fine pointer); off when reduced motion is requested.
    * ------------------------------------------------------------------ */
-  (function cursorTrail() {
+  (function cursorArrows() {
     if (reduceMotion || !window.matchMedia("(pointer: fine)").matches) return;
 
     var canvas = doc.createElement("canvas");
@@ -463,10 +463,10 @@
     canvas.setAttribute("aria-hidden", "true");
     body.appendChild(canvas);
     var ctx = canvas.getContext("2d");
-    var dpr = 1, W = 0, H = 0;
+    var W = 0, H = 0;
 
     function resize() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
       W = window.innerWidth; H = window.innerHeight;
       canvas.width = W * dpr; canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -474,76 +474,111 @@
     resize();
     window.addEventListener("resize", resize);
 
-    var LIFE = 420;          // ms a point stays in the tail
-    var pts = [];            // {x, y, t}
+    var MAX = 60;               // most arrows alive at once
+    var arrows = [];
+    var colors = ["#166a55", "#2f5fd0"];
+    var lastColorRead = -1e9;
+    var last = null;            // previous pointer sample
     var running = false;
-    var color = "#166a55";
-    var lastColorRead = 0;
+    var prevT = 0;
 
-    function readColor(now) {
-      if (now - lastColorRead < 500) return;
+    function readColors(now) {
+      if (now - lastColorRead < 600) return;
       lastColorRead = now;
-      color = getComputedStyle(root).getPropertyValue("--accent").trim() || color;
+      var cs = getComputedStyle(root);
+      colors = [cs.getPropertyValue("--accent").trim() || colors[0], cs.getPropertyValue("--accent-2").trim() || colors[1]];
+    }
+
+    function rand(a, b) { return a + Math.random() * (b - a); }
+
+    function spawn(x, y, dir, speed) {
+      if (arrows.length >= MAX) arrows.shift();
+      var a = dir + rand(-0.75, 0.75);            // fan out around the direction of travel
+      arrows.push({
+        x: x + rand(-6, 6), y: y + rand(-6, 6),
+        a: a,
+        v: rand(1.6, 3.0) + Math.min(speed, 30) * 0.05,
+        turn: (Math.random() < 0.5 ? -1 : 1) * rand(0.025, 0.07),                  // how much it curves each frame
+        wobble: rand(0, Math.PI * 2),
+        life: 0, max: rand(800, 1300),
+        size: rand(6, 9),
+        c: Math.random() < 0.55 ? 0 : 1,
+        path: []
+      });
     }
 
     doc.addEventListener("pointermove", function (e) {
       if (e.pointerType && e.pointerType !== "mouse") return;
       var now = performance.now();
-      var last = pts[pts.length - 1];
-      if (!last || Math.abs(last.x - e.clientX) + Math.abs(last.y - e.clientY) > 2) {
-        pts.push({ x: e.clientX, y: e.clientY, t: now });
+      if (last) {
+        var dx = e.clientX - last.x, dy = e.clientY - last.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist > 3) {
+          var dir = Math.atan2(dy, dx);
+          var n = Math.min(3, 1 + Math.floor(dist / 14)); // faster moves release more arrows
+          for (var i = 0; i < n; i++) spawn(e.clientX, e.clientY, dir, dist);
+          last = { x: e.clientX, y: e.clientY };
+        }
+      } else {
+        last = { x: e.clientX, y: e.clientY };
       }
-      if (!running) { running = true; requestAnimationFrame(draw); }
+      if (!running) { running = true; prevT = now; requestAnimationFrame(frame); }
     }, { passive: true });
 
-    doc.addEventListener("pointerleave", function () { pts.length = 0; });
+    doc.addEventListener("pointerleave", function () { last = null; });
 
-    function draw(now) {
-      while (pts.length && now - pts[0].t > LIFE) pts.shift();
+    function frame(now) {
+      var dt = Math.min(40, now - prevT) / 16.67;  // frames at 60 fps
+      prevT = now;
+      readColors(now);
       ctx.clearRect(0, 0, W, H);
-
-      if (pts.length < 3) {
-        if (!pts.length) { running = false; return; }
-        requestAnimationFrame(draw);
-        return;
-      }
-
-      readColor(now);
-      ctx.strokeStyle = color;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
 
-      // Smooth curve through midpoints; tail fades in and thickens toward the head.
-      var n = pts.length;
-      for (var i = 1; i < n - 1; i++) {
-        var p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1];
-        var k = i / (n - 1);
-        var age = 1 - (now - p1.t) / LIFE;
-        ctx.globalAlpha = Math.max(0, 0.55 * k * age);
-        ctx.lineWidth = 0.6 + 1.9 * k;
-        ctx.beginPath();
-        ctx.moveTo((p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
-        ctx.quadraticCurveTo(p1.x, p1.y, (p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
-        ctx.stroke();
-      }
+      for (var i = arrows.length - 1; i >= 0; i--) {
+        var p = arrows[i];
+        p.life += dt * 16.67;
+        if (p.life >= p.max) { arrows.splice(i, 1); continue; }
 
-      // Arrowhead at the newest point, pointing along the direction of travel.
-      var head = pts[n - 1], ref = pts[Math.max(0, n - 4)];
-      var dx = head.x - ref.x, dy = head.y - ref.y;
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      var fresh = 1 - (now - head.t) / LIFE;
-      if (dist > 4 && fresh > 0) {
-        var a = Math.atan2(dy, dx), size = 9, spread = 0.5;
-        ctx.globalAlpha = 0.7 * fresh;
-        ctx.lineWidth = 2;
+        // Move forward while bending: a gentle curve plus a small wobble.
+        p.wobble += 0.12 * dt;
+        p.a += (p.turn + Math.sin(p.wobble) * 0.02) * dt;
+        p.v *= Math.pow(0.975, dt);
+        p.x += Math.cos(p.a) * p.v * dt;
+        p.y += Math.sin(p.a) * p.v * dt;
+        p.path.push(p.x, p.y);
+        if (p.path.length > 32) p.path.splice(0, 2);  // keep the last 16 points as a curvy tail
+
+        var t = p.life / p.max;
+        var alpha = (t < 0.15 ? t / 0.15 : 1 - (t - 0.15) / 0.85) * 0.75;
+        if (p.path.length < 6) continue;
+
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = colors[p.c];
+        ctx.lineWidth = 1.6;
+
+        // Curvy tail
         ctx.beginPath();
-        ctx.moveTo(head.x - size * Math.cos(a - spread), head.y - size * Math.sin(a - spread));
-        ctx.lineTo(head.x, head.y);
-        ctx.lineTo(head.x - size * Math.cos(a + spread), head.y - size * Math.sin(a + spread));
+        ctx.moveTo(p.path[0], p.path[1]);
+        for (var k = 2; k < p.path.length - 2; k += 2) {
+          var mx = (p.path[k] + p.path[k + 2]) / 2, my = (p.path[k + 1] + p.path[k + 3]) / 2;
+          ctx.quadraticCurveTo(p.path[k], p.path[k + 1], mx, my);
+        }
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+
+        // Arrowhead
+        var s = p.size, sp = 0.55;
+        ctx.beginPath();
+        ctx.moveTo(p.x - s * Math.cos(p.a - sp), p.y - s * Math.sin(p.a - sp));
+        ctx.lineTo(p.x, p.y);
+        ctx.lineTo(p.x - s * Math.cos(p.a + sp), p.y - s * Math.sin(p.a + sp));
         ctx.stroke();
       }
       ctx.globalAlpha = 1;
-      requestAnimationFrame(draw);
+
+      if (arrows.length) requestAnimationFrame(frame);
+      else running = false;
     }
   })();
 
