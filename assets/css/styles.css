@@ -1620,3 +1620,124 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1
 .socials li:last-child .social:hover .social-tip, .socials li:last-child .social:focus-visible .social-tip { transform: translate(0, 0) scale(1); }
 .socials li:last-child .social-tip::after { left: auto; right: 26px; transform: none; }
 .contact { overflow-x: clip; }
+
+/* ---------- Contact: layout with location card ---------- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 56px;
+  align-items: center;
+}
+@media (max-width: 960px) {
+  .contact-grid { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+  .locate { max-width: 440px; }
+}
+
+.locate {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.js .locate.reveal.is-in { transition: transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 1), box-shadow 0.4s var(--ease), opacity 0.7s var(--ease); }
+.js .locate.reveal.is-in:hover, .locate:hover { transform: translateY(-6px) rotate(-0.8deg); box-shadow: 0 24px 48px -24px rgba(20, 21, 23, 0.35); }
+
+.locate-map {
+  position: relative;
+  display: block;
+  height: 200px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 19px, var(--line) 19px 20px),
+    repeating-linear-gradient(90deg, transparent 0 19px, var(--line) 19px 20px),
+    var(--bg);
+  overflow: hidden;
+}
+.locate-map iframe {
+  position: absolute;
+  inset: -40px;
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  border: 0;
+  pointer-events: none;
+  filter: saturate(0.75) contrast(1.02);
+  transition: transform 0.8s var(--ease);
+}
+.locate:hover .locate-map iframe { transform: scale(1.06); }
+:root[data-theme="dark"] .locate-map iframe { filter: invert(0.92) hue-rotate(180deg) saturate(0.6) brightness(0.95); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .locate-map iframe { filter: invert(0.92) hue-rotate(180deg) saturate(0.6) brightness(0.95); }
+}
+/* soft vignette so the pin pops */
+.locate-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 60% at 50% 50%, transparent 55%, color-mix(in srgb, var(--surface) 55%, transparent));
+  pointer-events: none;
+}
+
+.locate-pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 30px;
+  height: 40px;
+  transform: translate(-50%, -100%);
+  animation: pin-drop 0.9s cubic-bezier(0.3, 1.6, 0.5, 1) both, pin-bob 2.6s 1s ease-in-out infinite;
+}
+.locate-pin svg { position: relative; width: 100%; height: 100%; filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.3)); }
+.locate-pin path { fill: #ea4335; }
+.locate-pin circle { fill: #fff; }
+.pin-pulse {
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 16px;
+  height: 7px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, #ea4335 55%, transparent);
+  animation: pin-ring 2s ease-out infinite;
+}
+.pin-pulse-2 { animation-delay: 1s; }
+@keyframes pin-drop { from { opacity: 0; transform: translate(-50%, -260%); } }
+@keyframes pin-bob { 50% { transform: translate(-50%, -112%); } }
+@keyframes pin-ring { from { transform: scale(1); opacity: 0.9; } to { transform: scale(5); opacity: 0; } }
+
+.locate-open {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.locate-map:hover .locate-open, .locate-map:focus-visible .locate-open { opacity: 1; transform: none; }
+
+.locate-body { padding: 22px 24px 24px; }
+.locate-kicker { font-size: 13px; font-weight: 600; color: var(--accent); }
+.locate-body h3 { margin-top: 6px; font-size: 24px; letter-spacing: -0.03em; }
+.locate-copy { margin-top: 10px; font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+.locate-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line-strong);
+}
+.locate-facts div:last-child { grid-column: 1 / -1; }
+.locate-facts dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); }
+.locate-facts dd { margin: 3px 0 0; font-size: 14.5px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }

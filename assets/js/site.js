@@ -469,6 +469,28 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Contact card: live Mumbai time + a (probably accurate) status
+   * ------------------------------------------------------------------ */
+  var mumbaiTime = $("#mumbai-time"), mumbaiStatus = $("#mumbai-status");
+  if (mumbaiTime) {
+    var tf = new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", hour: "numeric", minute: "2-digit", hour12: true });
+    var hf = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", hour12: false });
+    var tick = function () {
+      var now = new Date();
+      mumbaiTime.textContent = tf.format(now).toUpperCase() + " IST";
+      var h = parseInt(hf.format(now), 10) % 24;
+      mumbaiStatus.textContent =
+        h >= 2 && h < 7   ? "Asleep. Probably. 😴" :
+        h >= 7 && h < 10  ? "Sipping cutting chai ☕" :
+        h >= 10 && h < 19 ? "Shipping code 🚀" :
+        h >= 19 && h < 23 ? "Debugging something 🐛" :
+                            "Still debugging 🌙";
+    };
+    tick();
+    setInterval(tick, 30000);
+  }
+
+  /* ------------------------------------------------------------------ *
    * Cursor trail: fire sparks that leave long, thin, curving threads
    * Desktop only (fine pointer); off when reduced motion is requested.
    * ------------------------------------------------------------------ */

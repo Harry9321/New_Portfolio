@@ -58,7 +58,7 @@ The site has three pages: **Home**, **Projects** and **Blog**. The header on eve
 
 [Open ↗](https://harry9321.github.io/New_Portfolio/)
 
-The first screen opens with **"Hi! I am Hariom Sahu."** (hover over the name and the letters wave), says what I do in one line, shows my availability, and gives two actions: **See my projects** and email me. The menu bar floats centred at the top of every page, and on desktop your cursor throws off sparkling fire sparks that leave long, curving threads.
+The first screen opens with **"Hi! I am Hariom Sahu."** (hover over the name and the letters wave), says what I do in one line and gives two actions: **See my projects** and email me. The menu bar floats centred at the top of every page, and on desktop your cursor throws off sparkling fire sparks that leave long, curving threads.
 
 ### 2. About: how I work
 
@@ -129,6 +129,8 @@ Write-ups on distributed pipelines, performance work and shipping GenAI in produ
 ![Contact section](docs/screenshots/contact.webp)
 
 My email (with a one-click **Copy** button), then full-colour app-style tiles for **GitHub, LinkedIn, X (Twitter), phone and Gmail**. Hovering over a tile makes it lift, tilt and glow in its brand colour with a shine sweep, shows a label with the handle or number, and the tile pulls gently toward your cursor.
+
+Next to it, a **"Where to find me"** card shows a live map of Mumbai with a bouncing pin, my local time, and a (probably accurate) status that changes through the day: from *sipping cutting chai* in the morning to *still debugging* late at night.
 
 ### Dark mode and mobile
 
