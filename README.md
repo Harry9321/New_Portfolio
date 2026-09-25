@@ -72,6 +72,10 @@ My photo sits beside a short intro that types itself out as you scroll in, follo
 2. **Measure, then optimise.** Query plans, latency percentiles and profiler output decide the redesign.
 3. **Ship systems people can trust.** Reliability and safety are requirements, from JWT-gated gateways to LLM guardrails.
 
+Then an **Education** card: B.E., Computer Engineering at A. P. Shah Institute of Technology, University of Mumbai (2021 – 2025), with a timeline that draws itself from 2021 to 2025 and a ring that fills to a **CGPA of 8.7/10**.
+
+![Education card](docs/screenshots/education.webp)
+
 It closes with my **toolbox**: each technology shown with its logo, grouped into Languages, Frameworks & libraries, Data & streaming, and Infrastructure. Tiles lift and glow in the tool's brand colour on hover.
 
 ### 3. Experience
@@ -91,9 +95,6 @@ What I worked on:
 - Designed a custom **Nginx API gateway** with JWT auth and rate limiting.
 - Hardened UAT / pre-prod environments with Redis, reverse proxies and end-to-end observability.
 - Built internal automation tools adopted company-wide.
-
-**B.E., Computer Engineering, A. P. Shah Institute of Technology, University of Mumbai** (2021 – 2025, CGPA 8.7/10)
-AWS Academy Cloud Foundations · AWS Academy ML Foundations · Cisco Networking Essentials
 
 ### 4. Projects
 
