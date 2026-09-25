@@ -1,52 +1,36 @@
-# Hariom Sahu — Developer Portfolio
+# Hariom Sahu — Portfolio
 
-A modern, single-page developer portfolio built with **Next.js 15 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **lucide-react**.
+A single-page developer portfolio in plain **HTML, CSS and JavaScript**. No framework, no build step, no dependencies.
 
-## Stack
+## Files
 
-- **Framework:** Next.js 15 / React 19, statically exported (no server required — deploys anywhere as static HTML)
-- **Styling:** Tailwind CSS, dark-mode-first palette (`zinc-950` base, violet / cyan / emerald accents), glassmorphism, radial glows
-- **Animation:** Framer Motion — scroll-triggered reveals, staggered grids, spring micro-interactions
-- **Icons:** lucide-react
+```
+index.html   Content and structure (all text lives here)
+styles.css   Design tokens, layout, components, light/dark themes
+script.js    Theme toggle, mobile menu, scroll reveals, count-up metrics, copy-email
+```
 
-## Getting started
+## Run locally
+
+Open `index.html` in a browser, or serve the folder:
 
 ```bash
-npm install
-npm run dev
+python3 -m http.server 8000
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+## Deploy
 
-## Build & deploy
+It's a static site, so any static host works:
 
-```bash
-npm run build
-```
+- **GitHub Pages:** Settings → Pages → Deploy from branch → `main` / root.
+- **Netlify / Cloudflare Pages / Vercel:** point at the repo root with no build command.
 
-`next.config.mjs` is set to `output: "export"`, so `npm run build` produces a fully static site in `out/` — drag-and-drop it onto Netlify, Cloudflare Pages, GitHub Pages, or any static host. It also deploys directly to **Vercel** with zero config (`vercel deploy`), including as a normal (non-exported) Next.js app if you remove `output: "export"` later and want server features.
+## Editing
 
-## Project structure
+- **Text:** edit `index.html` directly. Each section is marked with a comment (`<!-- Hero -->`, `<!-- About -->`, …).
+- **Colours:** change the tokens at the top of `styles.css` (`--accent`, `--bg`, …). Dark mode values sit right below them.
+- **Theme:** follows the visitor's system setting by default; the header toggle overrides it and is remembered.
 
-```
-app/                 Root layout, global styles, the single page that composes every section
-components/          One component per section (Navbar, Hero, About, Experience, Projects, Insights, Contact, Footer)
-components/ui/       Shared primitives — Reveal/Stagger animation wrappers, SectionHeading, StatCounter, TechPill, BackgroundGlow
-lib/data.ts          All content (profile, experience, projects, articles, skills). Edit this file to update the site.
-```
+## Accessibility
 
-## Editing content
-
-Everything text-based — your bio, experience bullets, project descriptions, article list, social links — lives in **`lib/data.ts`**. There's no content hardcoded inside components, so updating the site is a one-file edit.
-
-A few things to personalize before you ship it:
-
-- `profile.github` and `profile.x` in `lib/data.ts` are placeholders — swap in your real handles (only LinkedIn/email came from your resume).
-- `articles` in `lib/data.ts` are placeholder blog post titles/links — point `url` at your real posts, or replace them with your actual articles.
-- `projects[].image` uses royalty-free Unsplash photos as stand-ins — swap in real product screenshots for the strongest impression.
-- The contact form (`components/Contact.tsx`) currently simulates a submit. Wire the `handleSubmit` function to a real endpoint (Formspree, Resend, a serverless function) to receive messages.
-
-## Notes
-
-- Fonts (Inter, JetBrains Mono) load from Google Fonts via a `<link>` tag in `app/layout.tsx` rather than `next/font/google`, so the build never depends on network access — useful for CI/sandboxed build environments.
-- All animations respect `prefers-reduced-motion` behavior provided by Framer Motion's defaults.
+Semantic landmarks, skip link, visible focus states, keyboard-closable menu, and all motion disabled under `prefers-reduced-motion`.
