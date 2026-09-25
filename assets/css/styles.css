@@ -164,24 +164,29 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1
   width: 60vw;
   min-width: 740px;
   max-width: 100%;
-  height: 60px;
+  height: 62px;
   margin: 0 auto;
-  padding: 0 10px 0 14px;
+  padding: 0 10px 0 12px;
   display: flex;
   align-items: center;
   gap: 20px;
-  background: color-mix(in srgb, var(--surface) 78%, transparent);
-  backdrop-filter: saturate(160%) blur(16px);
-  -webkit-backdrop-filter: saturate(160%) blur(16px);
-  border: 1px solid var(--line);
-  border-radius: 999px;
+  /* Frosted glass: translucent fill + strong backdrop blur */
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid color-mix(in srgb, var(--line-strong) 80%, transparent);
+  border-radius: 16px;
+  box-shadow: 0 1px 0 color-mix(in srgb, #fff 40%, transparent) inset, 0 6px 20px -12px rgba(20, 21, 23, 0.18);
   pointer-events: auto;
   transition: box-shadow 0.3s var(--ease), background-color 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 .site-header.is-scrolled .header-inner {
-  background: color-mix(in srgb, var(--surface) 90%, transparent);
-  border-color: var(--line-strong);
-  box-shadow: var(--shadow);
+  background: color-mix(in srgb, var(--surface) 62%, transparent);
+  box-shadow: 0 1px 0 color-mix(in srgb, #fff 30%, transparent) inset, var(--shadow);
+}
+:root[data-theme="dark"] .header-inner { box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px -12px rgba(0,0,0,0.6); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .header-inner { box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px -12px rgba(0,0,0,0.6); }
 }
 @media (max-width: 900px) {
   .header-inner { width: 100%; min-width: 0; }
@@ -240,7 +245,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1
   color: var(--ink-2);
   background: transparent;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 10px;
   cursor: pointer;
   transition: border-color 0.2s var(--ease), color 0.2s var(--ease), background-color 0.2s var(--ease);
 }
@@ -270,7 +275,7 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1
     padding: 6px 18px;
     background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: 18px;
+    border-radius: 16px;
     box-shadow: var(--shadow);
     opacity: 0;
     visibility: hidden;
@@ -1045,3 +1050,5 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js .reveal { opacity: 1; transform: none; }
 }
+
+.emoji { font-style: normal; margin-left: 2px; }

@@ -2,7 +2,7 @@
    Hariom Sahu — Portfolio
    One dependency-free script for every page. Each page sets
    <body data-page="home|projects|blog|post" data-root="../">.
-   Content lives in data/projects.json and data/posts.json.
+   Content lives in data/projects.js and data/posts.js.
    ========================================================================== */
 (function () {
   "use strict";
@@ -31,11 +31,12 @@
   function isExternal(url) { return /^https?:\/\//i.test(url); }
   function resolve(url) { return !url || isExternal(url) || url.charAt(0) === "/" ? url : ROOT + url; }
 
-  function loadJSON(path) {
-    return fetch(ROOT + path, { cache: "no-cache" }).then(function (r) {
-      if (!r.ok) throw new Error(path + " → " + r.status);
-      return r.json();
-    });
+  // Data comes from data/projects.js and data/posts.js (window.PROJECTS / window.POSTS),
+  // so the site also works when index.html is opened straight from disk.
+  function getData(name) {
+    return Array.isArray(window[name])
+      ? Promise.resolve(window[name])
+      : Promise.reject(new Error("data/" + name.toLowerCase() + ".js is missing or has a syntax error"));
   }
 
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -353,7 +354,8 @@
   function plural(n, word) { return n + " " + word + (n === 1 ? "" : "s"); }
 
   function loadError(el, what) {
-    el.innerHTML = '<p class="empty">Couldn\'t load ' + what + ". If you opened this file directly, run a local server (see README).</p>";
+    el.innerHTML = '<p class="empty">Couldn\'t load ' + what + ". Check data/" + what + ".js for a missing comma or quote.</p>";
+    if (window.console) console.error("[site] could not load " + what);
   }
 
   /* ------------------------------------------------------------------ *
@@ -362,12 +364,12 @@
   var pages = {
     home: function () {
       var featuredEl = $("#featured-projects");
-      loadJSON("data/projects.json").then(function (projects) {
+      getData("PROJECTS").then(function (projects) {
         var featured = projects.filter(function (p) { return p.featured; });
         renderProjects(featuredEl, (featured.length ? featured : projects).slice(0, 4));
       }).catch(function () { loadError(featuredEl, "projects"); });
 
-      loadJSON("data/posts.json").then(function (posts) {
+      getData("POSTS").then(function (posts) {
         var latest = publishedPosts(posts).slice(0, 3);
         if (!latest.length) return;
         var list = $("#latest-posts");
@@ -379,7 +381,7 @@
 
     projects: function () {
       var grid = $("#all-projects"), count = $("#project-count");
-      loadJSON("data/projects.json").then(function (projects) {
+      getData("PROJECTS").then(function (projects) {
         function show(type) {
           var list = type ? projects.filter(function (p) { return p.type === type; }) : projects;
           renderProjects(grid, list);
@@ -393,7 +395,7 @@
 
     blog: function () {
       var list = $("#all-posts"), count = $("#post-count");
-      loadJSON("data/posts.json").then(function (raw) {
+      getData("POSTS").then(function (raw) {
         var posts = publishedPosts(raw);
         if (!posts.length) {
           list.innerHTML = '<li class="empty empty-card"><strong>First posts are on the way.</strong><span>Write-ups on distributed pipelines, performance and production GenAI are coming soon.</span></li>';
@@ -417,14 +419,19 @@
       var titleEl = $("#post-title"), bodyEl = $("#post-body");
 
       function notFound() {
+        if (location.protocol === "file:") {
+          titleEl.textContent = "Open this post through a local server";
+          bodyEl.innerHTML = "<p>Browsers block reading Markdown files from disk. In the project folder run <code>python3 -m http.server 8000</code> and open <code>http://localhost:8000</code>.</p>";
+          return;
+        }
         doc.title = "Post not found — Hariom Sahu";
         titleEl.textContent = "Post not found";
-        bodyEl.innerHTML = '<p>This post doesn\'t exist or has moved. <a href="./">See all posts</a>.</p>';
+        bodyEl.innerHTML = '<p>This post doesn\'t exist or has moved. <a href="index.html">See all posts</a>.</p>';
       }
       if (!/^[\w-]+$/.test(slug)) { notFound(); return; }
 
       Promise.all([
-        loadJSON("data/posts.json"),
+        getData("POSTS"),
         fetch(ROOT + "blog/posts/" + slug + ".md", { cache: "no-cache" }).then(function (r) {
           if (!r.ok) throw new Error("missing");
           return r.text();

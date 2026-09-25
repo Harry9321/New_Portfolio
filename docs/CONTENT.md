@@ -10,8 +10,8 @@ projects/index.html        All projects, filterable by type
 blog/index.html            All posts, filterable by tag
 blog/post.html             Renders a single post (?slug=...)
 blog/posts/*.md            Your posts, written in Markdown
-data/projects.json         ← add projects here
-data/posts.json            ← list posts here
+data/projects.js         ← add projects here
+data/posts.js            ← list posts here
 assets/css/styles.css      Design tokens, layout, light + dark themes
 assets/js/site.js          All behaviour (one file, no dependencies)
 assets/img/                Images: projects/, blog/
@@ -27,9 +27,10 @@ Every push to `main` redeploys automatically. For a custom domain later, add it 
 
 ## Add a project
 
-Add an entry to `data/projects.json`. Order in the file = order on the site.
+Add an entry to the list in `data/projects.js`. Order in the file = order on the site. The format is the same as JSON: quotes around keys and text, and a comma between entries. If a page shows "Couldn't load projects", look for a missing comma or quote.
 
-```json
+```js
+// inside the list in data/projects.js — add a comma after the previous project
 {
   "id": "my-project",
   "title": "My Project",
@@ -64,10 +65,11 @@ Add an entry to `data/projects.json`. Order in the file = order on the site.
 ## Write a blog post
 
 1. Copy `blog/posts/_template.md` to `blog/posts/my-post-slug.md` and write in Markdown.
-2. Add it to `data/posts.json`:
+2. Add it to `data/posts.js`:
 
-```json
-[
+```js
+// data/posts.js
+window.POSTS = [
   {
     "slug": "my-post-slug",
     "title": "From 40 minutes to 3: re-architecting a validation monolith",
@@ -75,7 +77,7 @@ Add an entry to `data/projects.json`. Order in the file = order on the site.
     "summary": "One line that makes people want to read it.",
     "tags": ["Performance", "Celery"]
   }
-]
+];
 ```
 
 Posts are sorted newest first automatically. Add `"draft": true` to hide a post while you're writing it. The home page shows the latest 3; the "Writing" section stays hidden until you publish your first post.
@@ -88,7 +90,7 @@ Markdown supports headings, code blocks with syntax highlighting, tables, quotes
 
 ## Run locally
 
-Pages load their content from the JSON files, so use a local server rather than opening the file directly:
+You can double-click `index.html` to preview the site. Blog **post** pages need a local server, because browsers block reading Markdown files from disk:
 
 ```bash
 python3 -m http.server 8000

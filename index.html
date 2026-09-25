@@ -22,15 +22,15 @@
 
   <header class="site-header" id="top">
     <div class="header-inner">
-      <a class="brand" href="./" aria-label="Hariom Sahu, home">
+      <a class="brand" href="index.html" aria-label="Hariom Sahu, home">
         <span class="brand-mark" aria-hidden="true">HS</span>
         <span class="brand-name">Hariom Sahu</span>
       </a>
       <nav class="nav" id="nav" aria-label="Primary">
         <a href="#about">About</a>
         <a href="#experience">Experience</a>
-        <a href="projects/">Projects</a>
-        <a href="blog/">Blog</a>
+        <a href="projects/index.html">Projects</a>
+        <a href="blog/index.html">Blog</a>
         <a href="#contact">Contact</a>
       </nav>
       <div class="header-actions">
@@ -57,7 +57,7 @@
           and production GenAI applications.
         </p>
         <div class="hero-cta reveal">
-          <a class="btn btn-primary" href="projects/">See my projects
+          <a class="btn btn-primary" href="projects/index.html">See my projects
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
           <a class="btn btn-ghost" href="mailto:hariomsahu.dev@gmail.com">hariomsahu.dev@gmail.com</a>
@@ -174,7 +174,7 @@
       </div>
     </section>
 
-    <!-- Projects (featured, loaded from data/projects.json) -->
+    <!-- Projects (featured, loaded from data/projects.js) -->
     <section class="section" id="work" aria-labelledby="work-title">
       <div class="container">
         <div class="section-head section-head-row reveal">
@@ -182,15 +182,15 @@
             <p class="eyebrow">03 — Selected work</p>
             <h2 id="work-title">Systems I've shipped</h2>
           </div>
-          <a class="link-arrow" href="projects/">All projects <span aria-hidden="true">→</span></a>
+          <a class="link-arrow" href="projects/index.html">All projects <span aria-hidden="true">→</span></a>
         </div>
         <div class="project-grid" id="featured-projects" aria-live="polite">
-          <noscript><p class="empty">Turn on JavaScript to see projects, or <a href="projects/">open the projects page</a>.</p></noscript>
+          <noscript><p class="empty">Turn on JavaScript to see projects, or <a href="projects/index.html">open the projects page</a>.</p></noscript>
         </div>
       </div>
     </section>
 
-    <!-- Writing (latest posts, loaded from data/posts.json; hidden when empty) -->
+    <!-- Writing (latest posts, loaded from data/posts.js; hidden when empty) -->
     <section class="section" id="writing" aria-labelledby="writing-title" hidden>
       <div class="container">
         <div class="section-head section-head-row reveal">
@@ -198,7 +198,7 @@
             <p class="eyebrow">04 — Writing</p>
             <h2 id="writing-title">Latest posts</h2>
           </div>
-          <a class="link-arrow" href="blog/">All posts <span aria-hidden="true">→</span></a>
+          <a class="link-arrow" href="blog/index.html">All posts <span aria-hidden="true">→</span></a>
         </div>
         <ol class="post-list" id="latest-posts"></ol>
       </div>
@@ -224,15 +224,17 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>© <span class="year">2026</span> Hariom Sahu</p>
+      <p>© <span class="year">2026</span> · Built by Hariom Sahu <span class="emoji" role="img" aria-label="rocket">🚀</span></p>
       <nav class="footer-nav" aria-label="Footer">
-        <a href="projects/">Projects</a>
-        <a href="blog/">Blog</a>
+        <a href="projects/index.html">Projects</a>
+        <a href="blog/index.html">Blog</a>
         <a href="#top">Back to top ↑</a>
       </nav>
     </div>
   </footer>
 
+  <script src="data/projects.js" defer></script>
+  <script src="data/posts.js" defer></script>
   <script src="assets/js/site.js" defer></script>
 </body>
 </html>

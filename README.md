@@ -162,7 +162,7 @@ These are internal systems at MCX, so their code and demos aren't public. Detail
 
 Plain **HTML, CSS and JavaScript**, with no framework and no build step. It's hosted for free on **GitHub Pages**.
 
-- Content lives in two data files, `data/projects.json` and `data/posts.json`, and blog posts are Markdown files in `blog/posts/`.
+- Content lives in two data files, `data/projects.js` and `data/posts.js`, and blog posts are Markdown files in `blog/posts/`.
 - Light and dark themes, responsive down to small phones, keyboard-accessible, and all motion is turned off for visitors who prefer reduced motion.
 
 **Run it locally**

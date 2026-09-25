@@ -1,4 +1,9 @@
-[
+/*
+  Projects shown on the site (order here = order on the site).
+  Edit the list below. Keep the JSON-style format: quotes around keys and text, commas between items.
+  See docs/CONTENT.md for every field.
+*/
+window.PROJECTS = [
   {
     "id": "csq-ai-engine",
     "title": "CSQ AI Engine",
@@ -11,10 +16,23 @@
       "Guardrails, monitoring and observability to keep LLM output safe under compliance constraints.",
       "Prompt and retrieval tuning plus front-end profiling of the chat interface."
     ],
-    "tags": ["Python", "FastAPI", "RAG", "Vector search", "LLM guardrails"],
-    "kpi": { "value": "−40%", "label": "end-to-end latency" },
+    "tags": [
+      "Python",
+      "FastAPI",
+      "RAG",
+      "Vector search",
+      "LLM guardrails"
+    ],
+    "kpi": {
+      "value": "−40%",
+      "label": "end-to-end latency"
+    },
     "image": "",
-    "links": { "demo": "", "video": "", "source": "" },
+    "links": {
+      "demo": "",
+      "video": "",
+      "source": ""
+    },
     "confidential": true,
     "featured": true
   },
@@ -30,10 +48,22 @@
       "Anomaly scoring that flags irregular patterns and routes alerts across channels.",
       "Tuned for low end-to-end latency so alerts stay actionable in a live market."
     ],
-    "tags": ["Kafka", "Python", "Redis", "Event-driven"],
-    "kpi": { "value": "Live", "label": "market surveillance" },
+    "tags": [
+      "Kafka",
+      "Python",
+      "Redis",
+      "Event-driven"
+    ],
+    "kpi": {
+      "value": "Live",
+      "label": "market surveillance"
+    },
     "image": "",
-    "links": { "demo": "", "video": "", "source": "" },
+    "links": {
+      "demo": "",
+      "video": "",
+      "source": ""
+    },
     "confidential": true,
     "featured": true
   },
@@ -49,10 +79,22 @@
       "No loss in data integrity across the migration.",
       "Instrumented end-to-end so failures surface instead of silently stalling batches."
     ],
-    "tags": ["Celery", "Redis", "Python", "PostgreSQL"],
-    "kpi": { "value": "40→3", "label": "minutes per run" },
+    "tags": [
+      "Celery",
+      "Redis",
+      "Python",
+      "PostgreSQL"
+    ],
+    "kpi": {
+      "value": "40→3",
+      "label": "minutes per run"
+    },
     "image": "",
-    "links": { "demo": "", "video": "", "source": "" },
+    "links": {
+      "demo": "",
+      "video": "",
+      "source": ""
+    },
     "confidential": true,
     "featured": true
   },
@@ -68,11 +110,23 @@
       "Rate limiting and reverse-proxy rules for bursty traffic.",
       "End-to-end logging for fast incident triage."
     ],
-    "tags": ["Nginx", "JWT", "AWS", "Observability"],
-    "kpi": { "value": "JWT", "label": "auth at the edge" },
+    "tags": [
+      "Nginx",
+      "JWT",
+      "AWS",
+      "Observability"
+    ],
+    "kpi": {
+      "value": "JWT",
+      "label": "auth at the edge"
+    },
     "image": "",
-    "links": { "demo": "", "video": "", "source": "" },
+    "links": {
+      "demo": "",
+      "video": "",
+      "source": ""
+    },
     "confidential": true,
     "featured": true
   }
-]
+];
