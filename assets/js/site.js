@@ -469,10 +469,10 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * Cursor trail: a flock of small curvy arrows that flow off the cursor
+   * Cursor trail: fire sparks that leave long, thin, curving threads
    * Desktop only (fine pointer); off when reduced motion is requested.
    * ------------------------------------------------------------------ */
-  (function cursorArrows() {
+  (function cursorSparks() {
     if (reduceMotion || !window.matchMedia("(pointer: fine)").matches) return;
 
     var canvas = doc.createElement("canvas");
@@ -491,110 +491,112 @@
     resize();
     window.addEventListener("resize", resize);
 
-    var MAX = 60;               // most arrows alive at once
-    var arrows = [];
-    var colors = ["#166a55", "#2f5fd0"];
-    var lastColorRead = -1e9;
-    var last = null;            // previous pointer sample
-    var running = false;
-    var prevT = 0;
-
-    function readColors(now) {
-      if (now - lastColorRead < 600) return;
-      lastColorRead = now;
-      var cs = getComputedStyle(root);
-      colors = [cs.getPropertyValue("--accent").trim() || colors[0], cs.getPropertyValue("--accent-2").trim() || colors[1]];
-    }
+    // Warm fire palette: brighter on dark backgrounds, deeper on light ones.
+    var PALETTE = {
+      dark:  ["#fff1c1", "#ffd27a", "#ffab40", "#ff7a2f"],
+      light: ["#f59e0b", "#f97316", "#ea580c", "#d97706"]
+    };
+    var MAX = 80;        // sparks alive at once
+    var TAIL = 26;       // points kept per thread
+    var sparks = [];
+    var last = null, running = false, prevT = 0;
 
     function rand(a, b) { return a + Math.random() * (b - a); }
 
     function spawn(x, y, dir, speed) {
-      if (arrows.length >= MAX) arrows.shift();
-      var a = dir + rand(-0.75, 0.75);            // fan out around the direction of travel
-      arrows.push({
-        x: x + rand(-6, 6), y: y + rand(-6, 6),
-        a: a,
-        v: rand(1.6, 3.0) + Math.min(speed, 30) * 0.05,
-        turn: (Math.random() < 0.5 ? -1 : 1) * rand(0.025, 0.07),                  // how much it curves each frame
-        wobble: rand(0, Math.PI * 2),
-        life: 0, max: rand(800, 1300),
-        size: rand(6, 9),
-        c: Math.random() < 0.55 ? 0 : 1,
-        path: []
+      if (sparks.length >= MAX) sparks.shift();
+      // Mostly thrown backwards and sideways from the direction of travel, like sparks off a grinder.
+      var a = dir + Math.PI + rand(-1.2, 1.2);
+      var v = rand(1.6, 4.2) + Math.min(speed, 40) * 0.04;
+      sparks.push({
+        x: x, y: y,
+        vx: Math.cos(a) * v, vy: Math.sin(a) * v - rand(0.2, 1.2),
+        curl: rand(-0.035, 0.035),        // gentle sideways bend so threads curve
+        life: 0, max: rand(700, 1400),
+        c: (Math.random() * 4) | 0,
+        tw: rand(0, 6.28),                 // twinkle phase
+        path: [x, y]
       });
     }
 
     doc.addEventListener("pointermove", function (e) {
       if (e.pointerType && e.pointerType !== "mouse") return;
-      var now = performance.now();
       if (last) {
         var dx = e.clientX - last.x, dy = e.clientY - last.y;
         var dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > 3) {
-          var dir = Math.atan2(dy, dx);
-          var n = Math.min(3, 1 + Math.floor(dist / 14)); // faster moves release more arrows
-          for (var i = 0; i < n; i++) spawn(e.clientX, e.clientY, dir, dist);
+        if (dist > 2) {
+          var n = Math.min(4, 1 + Math.floor(dist / 10));
+          for (var i = 0; i < n; i++) spawn(e.clientX, e.clientY, Math.atan2(dy, dx), dist);
           last = { x: e.clientX, y: e.clientY };
         }
       } else {
         last = { x: e.clientX, y: e.clientY };
       }
-      if (!running) { running = true; prevT = now; requestAnimationFrame(frame); }
+      if (!running) { running = true; prevT = performance.now(); requestAnimationFrame(frame); }
     }, { passive: true });
 
     doc.addEventListener("pointerleave", function () { last = null; });
 
     function frame(now) {
-      var dt = Math.min(40, now - prevT) / 16.67;  // frames at 60 fps
+      var dt = Math.min(40, now - prevT) / 16.67;
       prevT = now;
-      readColors(now);
+      var dark = currentTheme() === "dark";
+      var pal = dark ? PALETTE.dark : PALETTE.light;
+
       ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = dark ? "lighter" : "source-over";
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
 
-      for (var i = arrows.length - 1; i >= 0; i--) {
-        var p = arrows[i];
+      for (var i = sparks.length - 1; i >= 0; i--) {
+        var p = sparks[i];
         p.life += dt * 16.67;
-        if (p.life >= p.max) { arrows.splice(i, 1); continue; }
+        if (p.life >= p.max) { sparks.splice(i, 1); continue; }
 
-        // Move forward while bending: a gentle curve plus a small wobble.
-        p.wobble += 0.12 * dt;
-        p.a += (p.turn + Math.sin(p.wobble) * 0.02) * dt;
-        p.v *= Math.pow(0.975, dt);
-        p.x += Math.cos(p.a) * p.v * dt;
-        p.y += Math.sin(p.a) * p.v * dt;
+        // Physics: drag, a little gravity, and a sideways curl for a curvy thread.
+        var drag = Math.pow(0.965, dt);
+        p.vx *= drag; p.vy = p.vy * drag + 0.07 * dt;
+        var cvx = -p.vy * p.curl, cvy = p.vx * p.curl;
+        p.vx += cvx * dt; p.vy += cvy * dt;
+        p.x += p.vx * dt; p.y += p.vy * dt;
         p.path.push(p.x, p.y);
-        if (p.path.length > 32) p.path.splice(0, 2);  // keep the last 16 points as a curvy tail
+        if (p.path.length > TAIL * 2) p.path.splice(0, 2);
 
         var t = p.life / p.max;
-        var alpha = (t < 0.15 ? t / 0.15 : 1 - (t - 0.15) / 0.85) * 0.75;
-        if (p.path.length < 6) continue;
+        var fade = t < 0.08 ? t / 0.08 : 1 - (t - 0.08) / 0.92;
+        var n = p.path.length;
+        if (n < 6) continue;
+        var col = pal[p.c];
 
-        ctx.globalAlpha = alpha;
-        ctx.strokeStyle = colors[p.c];
-        ctx.lineWidth = 1.6;
-
-        // Curvy tail
+        // Thread: tapered, fading from the tail to the glowing head.
+        var g = ctx.createLinearGradient(p.path[0], p.path[1], p.x, p.y);
+        g.addColorStop(0, "rgba(0,0,0,0)");
+        g.addColorStop(1, col);
+        ctx.globalAlpha = fade * (dark ? 0.9 : 1);
+        ctx.strokeStyle = g;
+        ctx.lineWidth = dark ? 1.2 : 1.45;
         ctx.beginPath();
         ctx.moveTo(p.path[0], p.path[1]);
-        for (var k = 2; k < p.path.length - 2; k += 2) {
-          var mx = (p.path[k] + p.path[k + 2]) / 2, my = (p.path[k + 1] + p.path[k + 3]) / 2;
-          ctx.quadraticCurveTo(p.path[k], p.path[k + 1], mx, my);
+        for (var k = 2; k < n - 2; k += 2) {
+          ctx.quadraticCurveTo(p.path[k], p.path[k + 1], (p.path[k] + p.path[k + 2]) / 2, (p.path[k + 1] + p.path[k + 3]) / 2);
         }
         ctx.lineTo(p.x, p.y);
         ctx.stroke();
 
-        // Arrowhead
-        var s = p.size, sp = 0.55;
-        ctx.beginPath();
-        ctx.moveTo(p.x - s * Math.cos(p.a - sp), p.y - s * Math.sin(p.a - sp));
-        ctx.lineTo(p.x, p.y);
-        ctx.lineTo(p.x - s * Math.cos(p.a + sp), p.y - s * Math.sin(p.a + sp));
-        ctx.stroke();
+        // Sparkling head: a hot core with a soft, flickering glow.
+        p.tw += 0.6 * dt;
+        var flicker = 0.65 + 0.35 * Math.sin(p.tw);
+        ctx.fillStyle = col;
+        ctx.globalAlpha = fade * (dark ? 0.28 : 0.35) * flicker;
+        ctx.beginPath(); ctx.arc(p.x, p.y, 3.6 * flicker + 1, 0, 6.2832); ctx.fill();
+        ctx.globalAlpha = fade;
+        ctx.fillStyle = dark ? "#fffaf0" : col;
+        ctx.beginPath(); ctx.arc(p.x, p.y, 1.3, 0, 6.2832); ctx.fill();
       }
       ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
 
-      if (arrows.length) requestAnimationFrame(frame);
+      if (sparks.length) requestAnimationFrame(frame);
       else running = false;
     }
   })();
