@@ -66,13 +66,13 @@ The first screen opens with **"Hi! I am Hariom Sahu."** (hover over the name and
 
 ![About section](docs/screenshots/about.webp)
 
-A short statement of what I work on, then the three principles I build by:
+My photo sits beside a short intro that types itself out as you scroll in, followed by the three principles I build by:
 
 1. **Design for the failure mode.** Traffic spikes, partial outages and bad input will happen, so guardrails and observability ship with the first version.
 2. **Measure, then optimise.** Query plans, latency percentiles and profiler output decide the redesign.
 3. **Ship systems people can trust.** Reliability and safety are requirements, from JWT-gated gateways to LLM guardrails.
 
-It closes with my **toolbox** of languages, databases and infrastructure.
+It closes with my **toolbox**: each technology shown with its logo, grouped into Languages, Frameworks & libraries, Data & streaming, and Infrastructure. Tiles lift and glow in the tool's brand colour on hover.
 
 ### 3. Experience
 
@@ -150,8 +150,8 @@ These are internal systems at MCX, so their code and demos aren't public. Detail
 
 ## Skills
 
-**Languages:** Python · Java · TypeScript
-**Backend:** FastAPI · Node.js · SQLAlchemy · Celery
+**Languages:** Python · Java · TypeScript · JavaScript
+**Frameworks:** FastAPI · Node.js · React · SQLAlchemy · Celery
 **Data:** PostgreSQL · MongoDB · Redis · Kafka
 **Infrastructure:** Docker · AWS · Nginx · CI/CD
 **AI:** RAG pipelines · vector search · neural reranking · LLM guardrails

@@ -378,6 +378,48 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Typewriter: types a paragraph out once it scrolls into view.
+   * Untyped text stays in place (transparent) so nothing jumps.
+   * ------------------------------------------------------------------ */
+  $$(".typewriter").forEach(function (el) {
+    var full = el.textContent.replace(/\s+/g, " ").trim();
+    if (reduceMotion || !("IntersectionObserver" in window)) return;
+    el.setAttribute("aria-label", full);
+    el.innerHTML = '<span class="tw-typed" aria-hidden="true"></span><span class="tw-caret" aria-hidden="true"></span><span class="tw-rest" aria-hidden="true">' + esc(full) + "</span>";
+    var typed = $(".tw-typed", el), rest = $(".tw-rest", el);
+
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      var i = 0;
+      (function step() {
+        // Type 1–3 characters per tick with a short pause after punctuation.
+        i = Math.min(full.length, i + 1 + (Math.random() < 0.35 ? 1 : 0));
+        typed.textContent = full.slice(0, i);
+        rest.textContent = full.slice(i);
+        if (i >= full.length) { el.classList.add("is-done"); return; }
+        var ch = full.charAt(i - 1);
+        setTimeout(step, /[.,:;]/.test(ch) ? 180 : 16 + Math.random() * 22);
+      })();
+    }, { threshold: 0.6 });
+    io.observe(el);
+  });
+
+  /* ------------------------------------------------------------------ *
+   * Toolbox: soft brand-coloured spotlight follows the pointer
+   * ------------------------------------------------------------------ */
+  var toolbox = $("#toolbox");
+  if (toolbox && !reduceMotion) {
+    toolbox.addEventListener("pointermove", function (e) {
+      var tile = e.target.closest(".tool");
+      if (!tile) return;
+      var r = tile.getBoundingClientRect();
+      tile.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      tile.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  }
+
+  /* ------------------------------------------------------------------ *
    * Cursor trail: a light, curvy arrow that follows the mouse
    * Desktop only (fine pointer); off when reduced motion is requested.
    * ------------------------------------------------------------------ */

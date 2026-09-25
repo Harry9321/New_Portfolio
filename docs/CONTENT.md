@@ -25,6 +25,21 @@ assets/img/                Images: projects/, blog/
 
 Every push to `main` redeploys automatically. For a custom domain later, add it in the same Pages screen. The site uses relative links, so it works at any address.
 
+## Add your photo
+
+Save a portrait photo as **`assets/img/profile.jpg`** (about 800×1000, 4:5, under 300 KB) and push. It appears in the About section automatically. Until then an "HS" monogram fills the frame.
+
+## Edit the toolbox
+
+The toolbox is in `index.html` under `<!-- About -->`. Each tile is one line:
+
+```html
+<li class="tool" style="--c:#3776ab"><span class="tool-icon"><img src="assets/icons/tech/python.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">Python</span></li>
+```
+
+- `--c` is the brand colour used for the hover glow.
+- Logos live in `assets/icons/tech/`. For a new one, download its SVG from [devicon.dev](https://devicon.dev) (the "original" version) into that folder.
+
 ## Add a project
 
 Add an entry to the list in `data/projects.js`. Order in the file = order on the site. The format is the same as JSON: quotes around keys and text, and a comma between entries. If a page shows "Couldn't load projects", look for a missing comma or quote.

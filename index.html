@@ -69,15 +69,19 @@
     <!-- About -->
     <section class="section" id="about" aria-labelledby="about-title">
       <div class="container grid-2">
-        <div class="section-head reveal">
-          <p class="eyebrow">01 — About</p>
-          <h2 id="about-title">How I work</h2>
+        <div class="section-head about-head">
+          <div class="reveal">
+            <h2 id="about-title">How I work</h2>
+          </div>
+          <!-- Photo: save your picture as assets/img/profile.jpg (portrait, about 800×1000). Until then the monogram shows. -->
+          <figure class="portrait reveal">
+            <div class="portrait-fallback" aria-hidden="true"><span>HS</span></div>
+            <img src="assets/img/profile.jpg" alt="Hariom Sahu" width="800" height="1000" loading="lazy" decoding="async" onerror="this.remove()" />
+          </figure>
         </div>
         <div>
-          <p class="prose-lg reveal">
-            I turn fragile monoliths into resilient, observable pipelines. Most of my work sits where
-            throughput, correctness and compliance meet: financial data that has to be right, fast, and auditable.
-          </p>
+          <p class="prose-lg typewriter reveal" id="about-intro">I turn fragile monoliths into resilient, observable pipelines. Most of my work sits where throughput, correctness and compliance meet: financial data that has to be right, fast, and auditable.</p>
+
           <ol class="principles">
             <li class="reveal">
               <h3>Design for the failure mode</h3>
@@ -92,13 +96,48 @@
               <p>From JWT-gated gateways to LLM guardrails in a regulated environment, reliability and safety are requirements, not features.</p>
             </li>
           </ol>
+
           <div class="stack reveal">
-            <p class="eyebrow">Toolbox</p>
-            <ul class="tags">
-              <li>Python</li><li>Java</li><li>TypeScript</li><li>Node.js</li><li>FastAPI</li>
-              <li>PostgreSQL</li><li>MongoDB</li><li>Redis</li><li>Kafka</li><li>Celery</li>
-              <li>SQLAlchemy</li><li>Docker</li><li>AWS</li><li>Nginx</li><li>CI/CD</li>
-            </ul>
+            <h3 class="stack-title">Toolbox</h3>
+            <div class="toolbox" id="toolbox">
+              <div class="tool-group">
+                <p class="tool-group-title">Languages</p>
+                <ul class="tools">
+                  <li class="tool" style="--c:#3776ab"><span class="tool-icon"><img src="assets/icons/tech/python.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">Python</span></li>
+                  <li class="tool" style="--c:#e76f00"><span class="tool-icon"><img src="assets/icons/tech/java.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">Java</span></li>
+                  <li class="tool" style="--c:#3178c6"><span class="tool-icon"><img src="assets/icons/tech/typescript.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">TypeScript</span></li>
+                  <li class="tool" style="--c:#e8c400"><span class="tool-icon"><img src="assets/icons/tech/javascript.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">JavaScript</span></li>
+                </ul>
+              </div>
+              <div class="tool-group">
+                <p class="tool-group-title">Frameworks &amp; libraries</p>
+                <ul class="tools">
+                  <li class="tool" style="--c:#009688"><span class="tool-icon"><img src="assets/icons/tech/fastapi.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">FastAPI</span></li>
+                  <li class="tool" style="--c:#5fa04e"><span class="tool-icon"><img src="assets/icons/tech/nodejs.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">Node.js</span></li>
+                  <li class="tool" style="--c:#149eca"><span class="tool-icon"><img src="assets/icons/tech/react.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">React</span></li>
+                  <li class="tool" style="--c:#d71f00"><span class="tool-icon"><img src="assets/icons/tech/sqlalchemy.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">SQLAlchemy</span></li>
+                  <li class="tool" style="--c:#37814a"><span class="tool-icon"><img src="assets/icons/tech/celery.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">Celery</span></li>
+                </ul>
+              </div>
+              <div class="tool-group">
+                <p class="tool-group-title">Data &amp; streaming</p>
+                <ul class="tools">
+                  <li class="tool" style="--c:#336791"><span class="tool-icon"><img src="assets/icons/tech/postgresql.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">PostgreSQL</span></li>
+                  <li class="tool" style="--c:#47a248"><span class="tool-icon"><img src="assets/icons/tech/mongodb.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">MongoDB</span></li>
+                  <li class="tool" style="--c:#dc382d"><span class="tool-icon"><img src="assets/icons/tech/redis.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">Redis</span></li>
+                  <li class="tool" style="--c:#231f20"><span class="tool-icon"><img src="assets/icons/tech/apachekafka.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">Kafka</span></li>
+                </ul>
+              </div>
+              <div class="tool-group">
+                <p class="tool-group-title">Infrastructure</p>
+                <ul class="tools">
+                  <li class="tool" style="--c:#2496ed"><span class="tool-icon"><img src="assets/icons/tech/docker.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">Docker</span></li>
+                  <li class="tool" style="--c:#ff9900"><span class="tool-icon"><img src="assets/icons/tech/amazonwebservices.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">AWS</span></li>
+                  <li class="tool" style="--c:#009639"><span class="tool-icon"><img src="assets/icons/tech/nginx.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">Nginx</span></li>
+                  <li class="tool" style="--c:#2088ff"><span class="tool-icon"><img src="assets/icons/tech/githubactions.svg" alt="" width="26" height="26" loading="lazy" decoding="async" /></span><span class="tool-name">CI/CD</span></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -108,7 +147,6 @@
     <section class="section" id="experience" aria-labelledby="exp-title">
       <div class="container grid-2">
         <div class="section-head reveal">
-          <p class="eyebrow">02 — Experience</p>
           <h2 id="exp-title">Where I've been</h2>
         </div>
         <div class="timeline">
@@ -179,7 +217,6 @@
       <div class="container">
         <div class="section-head section-head-row reveal">
           <div>
-            <p class="eyebrow">03 — Selected work</p>
             <h2 id="work-title">Systems I've shipped</h2>
           </div>
           <a class="link-arrow" href="projects/index.html">All projects <span aria-hidden="true">→</span></a>
@@ -195,7 +232,6 @@
       <div class="container">
         <div class="section-head section-head-row reveal">
           <div>
-            <p class="eyebrow">04 — Writing</p>
             <h2 id="writing-title">Latest posts</h2>
           </div>
           <a class="link-arrow" href="blog/index.html">All posts <span aria-hidden="true">→</span></a>
@@ -207,7 +243,6 @@
     <!-- Contact -->
     <section class="section contact" id="contact" aria-labelledby="contact-title">
       <div class="container">
-        <p class="eyebrow reveal">Contact</p>
         <h2 class="contact-title reveal" id="contact-title">Have a system that needs to be <em>faster</em> or <em>sturdier</em>? Let's talk.</h2>
         <div class="contact-row reveal">
           <a class="contact-email" href="mailto:hariomsahu.dev@gmail.com">hariomsahu.dev@gmail.com</a>
