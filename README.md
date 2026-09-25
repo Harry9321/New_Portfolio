@@ -58,7 +58,7 @@ The site has three pages: **Home**, **Projects** and **Blog**. The header on eve
 
 [Open ↗](https://harry9321.github.io/New_Portfolio/)
 
-The first screen opens with **"Hi! I am Hariom Sahu."** (hover over the name and the letters wave), says what I do in one line and gives two actions: **See my projects** and email me. The menu bar floats centred at the top of every page, and on desktop your cursor throws off sparkling fire sparks that leave long, curving threads.
+The first screen opens with my name as a terminal prompt, **`~/Hariom-Sahu $ ▌`**, with a blinking cursor (hover over the name and the letters wave), says what I do in one line and gives two actions: **See my projects** and email me. The menu bar floats centred at the top of every page, and on desktop your cursor throws off sparkling fire sparks that leave long, curving threads.
 
 ### 2. About: how I work
 

@@ -1741,3 +1741,28 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1
 .locate-facts div:last-child { grid-column: 1 / -1; }
 .locate-facts dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--muted); }
 .locate-facts dd { margin: 3px 0 0; font-size: 14.5px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* ---------- Hero: terminal-prompt name  ~/Hariom-Sahu $ ▌ ---------- */
+.prompt { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0; }
+.prompt-path, .prompt-sign {
+  font-family: var(--font-mono);
+  font-size: 0.72em;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--muted);
+}
+.prompt-path { margin-right: 0.06em; }
+.prompt-sign { margin-left: 0.32em; color: var(--accent); }
+.prompt-caret {
+  display: inline-block;
+  width: 0.42em;
+  height: 0.78em;
+  margin-left: 0.22em;
+  align-self: center;
+  transform: translateY(0.06em);
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  animation: prompt-blink 1.05s steps(1) infinite;
+}
+@keyframes prompt-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .prompt-caret { animation: none; } }

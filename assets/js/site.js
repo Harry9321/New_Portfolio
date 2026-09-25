@@ -396,7 +396,7 @@
   var heroName = $("#hero-name");
   if (heroName) {
     var text = heroName.textContent;
-    heroName.setAttribute("aria-label", text);
+    heroName.setAttribute("aria-label", heroName.dataset.label || text);
     heroName.innerHTML = text.split("").map(function (c, i) {
       return '<span class="ch' + (c === " " ? " sp" : "") + '" style="--i:' + i + '" aria-hidden="true">' + (c === " " ? "&nbsp;" : esc(c)) + "</span>";
     }).join("");
