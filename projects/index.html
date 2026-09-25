@@ -49,16 +49,18 @@
     <section class="page-hero">
       <div class="container">
         <h1 class="page-title reveal">Things I've <em>built</em> and shipped.</h1>
-        <p class="page-lede reveal">Production systems from work, plus side projects with live demos, walkthrough videos and source code.</p>
+        <p class="page-lede reveal">Production systems from my work at MCX, and solo projects with live links and demo videos.</p>
       </div>
     </section>
     <section class="section section-tight">
       <div class="container">
-        <div class="toolbar reveal">
-          <div class="filters" id="project-filters" role="group" aria-label="Filter projects"></div>
-          <p class="count-label" id="project-count" aria-live="polite"></p>
+        <div class="seg reveal" id="project-tabs" role="tablist" aria-label="Show projects">
+          <span class="seg-pill" aria-hidden="true"></span>
+          <button class="seg-btn" type="button" role="tab" aria-selected="true" data-view="all">All <span class="seg-count" data-count="all">·</span></button>
+          <button class="seg-btn" type="button" role="tab" aria-selected="false" data-view="Work">Work <span class="seg-count" data-count="Work">·</span></button>
+          <button class="seg-btn" type="button" role="tab" aria-selected="false" data-view="Personal">Personal <span class="seg-count" data-count="Personal">·</span></button>
         </div>
-        <div class="project-grid" id="all-projects">
+        <div class="proj-groups" id="all-projects">
           <noscript><p class="empty">Turn on JavaScript to see projects.</p></noscript>
         </div>
       </div>

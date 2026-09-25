@@ -1,5 +1,6 @@
 /*
   Projects shown on the site (order here = order on the site).
+  "type": "Work" for company projects, "Personal" for solo/side projects.
   Edit the list below. Keep the JSON-style format: quotes around keys and text, commas between items.
   See docs/CONTENT.md for every field.
 */
@@ -7,7 +8,8 @@ window.PROJECTS = [
   {
     "id": "csq-ai-engine",
     "title": "CSQ AI Engine",
-    "type": "Professional",
+    "type": "Work",
+    "org": "Multi Commodity Exchange",
     "year": "2026",
     "category": "Enterprise GenAI · Multimodal RAG",
     "summary": "A production RAG chat and agentic application for a regulated financial environment, from retrieval architecture to multimodal input handling.",
@@ -39,7 +41,8 @@ window.PROJECTS = [
   {
     "id": "kafka-anomaly-engine",
     "title": "Real-time anomaly detection engine",
-    "type": "Professional",
+    "type": "Work",
+    "org": "Multi Commodity Exchange",
     "year": "2025",
     "category": "Streaming ETL · Fraud signals",
     "summary": "A Kafka-powered pipeline that watches live trading activity and alerts the moment behaviour looks suspicious.",
@@ -70,7 +73,8 @@ window.PROJECTS = [
   {
     "id": "distributed-validation-pipeline",
     "title": "Distributed file validation pipeline",
-    "type": "Professional",
+    "type": "Work",
+    "org": "Multi Commodity Exchange",
     "year": "2025",
     "category": "Systems redesign · Performance",
     "summary": "A ground-up rebuild of a sequential validation job into a horizontally scalable, parallel system.",
@@ -101,7 +105,8 @@ window.PROJECTS = [
   {
     "id": "nginx-api-gateway",
     "title": "Custom Nginx API gateway",
-    "type": "Professional",
+    "type": "Work",
+    "org": "Multi Commodity Exchange",
     "year": "2025",
     "category": "Security · Traffic resilience",
     "summary": "A hardened edge layer that keeps unauthenticated traffic out and absorbs bursts before they reach downstream services.",

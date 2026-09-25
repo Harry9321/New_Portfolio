@@ -61,7 +61,10 @@
     ext: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>',
     code: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4"/></svg>',
     lock: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
-    close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+    close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+    globe: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>',
+    briefcase: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3 12.5h18"/></svg>',
+    spark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z"/></svg>'
   };
 
   /* ------------------------------------------------------------------ *
@@ -255,10 +258,15 @@
   /* ------------------------------------------------------------------ *
    * Project cards
    * ------------------------------------------------------------------ */
+  function projectKind(p) {
+    return /^(work|professional|company)$/i.test(p.type || "") ? "Work" : "Personal";
+  }
+
   function projectCard(p) {
     var links = p.links || {};
     var video = parseVideo(links.video);
     var title = esc(p.title);
+    var kind = projectKind(p);
 
     // Media: your image → YouTube thumbnail → typographic cover
     var mediaInner;
@@ -269,21 +277,30 @@
     } else {
       mediaInner =
         '<div class="cover" aria-hidden="true">' +
-          '<span class="cover-cat">' + esc(p.category || p.type || "") + "</span>" +
+          '<span class="cover-cat">' + esc(p.category || "") + "</span>" +
           (p.kpi ? '<span class="cover-kpi">' + esc(p.kpi.value) + "</span><span class=\"cover-label\">" + esc(p.kpi.label) + "</span>" : "") +
         "</div>";
     }
+    var badge = '<span class="media-badge media-badge-' + kind.toLowerCase() + '">' +
+      (kind === "Work" ? ICON.briefcase + " Work" : ICON.spark + " Personal") + "</span>";
 
     var media = video
       ? '<button class="card-media is-playable" type="button" data-video="' + esc(links.video) + '" data-title="' + title + '" aria-label="Play demo video: ' + title + '">' +
-          mediaInner + '<span class="play" aria-hidden="true">' + ICON.play + "</span></button>"
-      : '<div class="card-media">' + mediaInner + "</div>";
+          mediaInner + badge + '<span class="play" aria-hidden="true">' + ICON.play + "</span></button>"
+      : '<div class="card-media">' + mediaInner + badge + "</div>";
 
-    var actions = [];
-    if (links.demo) actions.push('<a class="action action-primary" href="' + esc(resolve(links.demo)) + '" target="_blank" rel="noopener">Live demo ' + ICON.ext + "</a>");
-    if (video) actions.push('<button class="action" type="button" data-video="' + esc(links.video) + '" data-title="' + title + '">' + ICON.play + " Watch demo</button>");
-    if (links.source) actions.push('<a class="action" href="' + esc(resolve(links.source)) + '" target="_blank" rel="noopener">' + ICON.code + " Source</a>");
-    if (!actions.length && p.confidential) actions.push('<span class="action action-muted">' + ICON.lock + " Proprietary · details on request</span>");
+    // Footer: Live link + Demo video are always shown; unavailable ones are greyed out.
+    var why = kind === "Work" ? "Private" : "Soon";
+    var whyTitle = kind === "Work" ? "Internal company system: not publicly available" : "Coming soon";
+    var live = links.demo
+      ? '<a class="action action-primary" href="' + esc(resolve(links.demo)) + '" target="_blank" rel="noopener">' + ICON.globe + " Live link " + ICON.ext + "</a>"
+      : '<span class="action is-disabled" title="' + whyTitle + '" aria-disabled="true">' + ICON.globe + " Live link <em>" + why + "</em></span>";
+    var vid = video
+      ? '<button class="action" type="button" data-video="' + esc(links.video) + '" data-title="' + title + '">' + ICON.play + " Demo video</button>"
+      : '<span class="action is-disabled" title="' + whyTitle + '" aria-disabled="true">' + ICON.play + " Demo video <em>" + why + "</em></span>";
+    var src = links.source
+      ? '<a class="action action-icon" href="' + esc(resolve(links.source)) + '" target="_blank" rel="noopener" aria-label="Source code" title="Source code">' + ICON.code + "</a>"
+      : "";
 
     var highlights = (p.highlights || []).length
       ? '<details class="card-details"><summary>What I did</summary><ul class="bullets">' +
@@ -294,16 +311,17 @@
       ? '<ul class="tags tags-sm">' + p.tags.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>"
       : "";
 
-    var meta = [p.type, p.year].filter(Boolean).map(esc).join(" · ");
+    var meta = [kind === "Work" ? (p.org || "Work") : "Solo project", p.year].filter(Boolean).map(esc).join(" · ");
 
-    return '<article class="card reveal" id="' + esc(p.id) + '">' + media +
+    return '<article class="card card-' + kind.toLowerCase() + ' reveal" id="' + esc(p.id) + '">' + media +
       '<div class="card-body">' +
-        (meta ? '<p class="card-meta">' + meta + "</p>" : "") +
+        '<p class="card-meta">' + meta + "</p>" +
         "<h3>" + title + "</h3>" +
         '<p class="card-summary">' + esc(p.summary) + "</p>" +
         highlights + tags +
-        (actions.length ? '<div class="card-actions">' + actions.join("") + "</div>" : "") +
-      "</div></article>";
+      "</div>" +
+      '<div class="card-foot">' + live + vid + src + "</div>" +
+      "</article>";
   }
 
   function renderProjects(el, list) {
@@ -311,6 +329,20 @@
       ? list.map(projectCard).join("")
       : '<p class="empty">No projects here yet.</p>';
     reveal(el);
+  }
+
+  // Placeholder card for an empty group, shaped like a real card.
+  function placeholderCard(kind) {
+    var work = kind === "Work";
+    return '<article class="card card-placeholder reveal">' +
+      '<div class="card-media"><div class="cover cover-empty" aria-hidden="true">' + (work ? ICON.briefcase : ICON.spark) + "</div></div>" +
+      '<div class="card-body"><p class="card-meta">' + (work ? "Work" : "Solo project") + "</p>" +
+      "<h3>" + (work ? "More work projects soon" : "Solo projects are on the way") + "</h3>" +
+      '<p class="card-summary">' + (work
+        ? "New systems from work will be added here."
+        : "Side projects with live links and demo videos are being built. Check back soon.") + "</p></div>" +
+      '<div class="card-foot"><span class="action is-disabled">' + ICON.globe + ' Live link <em>Soon</em></span><span class="action is-disabled">' + ICON.play + " Demo video <em>Soon</em></span></div>" +
+      "</article>";
   }
 
   /* ------------------------------------------------------------------ *
@@ -537,17 +569,55 @@
     },
 
     projects: function () {
-      var grid = $("#all-projects"), count = $("#project-count");
+      var wrap = $("#all-projects");
+      var GROUPS = {
+        Work: { title: "Work projects", sub: "Production systems I built at Multi Commodity Exchange, India's largest commodity exchange.", icon: ICON.briefcase },
+        Personal: { title: "Personal & solo projects", sub: "Things I design, build and ship on my own, with live links and demo videos.", icon: ICON.spark }
+      };
+
       getData("PROJECTS").then(function (projects) {
-        function show(type) {
-          var list = type ? projects.filter(function (p) { return p.type === type; }) : projects;
-          renderProjects(grid, list);
-          count.textContent = plural(list.length, "project");
+        var byKind = { Work: [], Personal: [] };
+        projects.forEach(function (p) { byKind[projectKind(p)].push(p); });
+
+        $$("[data-count]").forEach(function (el) {
+          var k = el.dataset.count;
+          el.textContent = k === "all" ? projects.length : byKind[k].length;
+        });
+
+        function group(kind) {
+          var g = GROUPS[kind], list = byKind[kind];
+          return '<section class="proj-group proj-group-' + kind.toLowerCase() + '" aria-labelledby="g-' + kind + '">' +
+            '<header class="group-head reveal"><span class="group-icon">' + g.icon + "</span>" +
+            '<div><h2 id="g-' + kind + '">' + g.title + "</h2><p>" + g.sub + "</p></div>" +
+            '<span class="group-count">' + list.length + "</span></header>" +
+            '<div class="project-grid">' + (list.length ? list.map(projectCard).join("") : placeholderCard(kind)) + "</div></section>";
         }
-        buildFilters($("#project-filters"), unique(projects.map(function (p) { return p.type; })), show);
-        show(null);
+
+        function show(view) {
+          wrap.innerHTML = view === "all" ? group("Work") + group("Personal") : group(view);
+          reveal(wrap);
+        }
+
+        // Segmented control with sliding indicator
+        var seg = $("#project-tabs"), pill = $(".seg-pill", seg);
+        function move(btn) {
+          pill.style.width = btn.offsetWidth + "px";
+          pill.style.transform = "translateX(" + btn.offsetLeft + "px)";
+        }
+        var tabs = $$(".seg-btn", seg);
+        seg.addEventListener("click", function (e) {
+          var btn = e.target.closest(".seg-btn");
+          if (!btn) return;
+          tabs.forEach(function (t) { t.setAttribute("aria-selected", String(t === btn)); });
+          move(btn);
+          show(btn.dataset.view);
+        });
+        window.addEventListener("resize", function () { move($('.seg-btn[aria-selected="true"]', seg)); });
+        requestAnimationFrame(function () { move(tabs[0]); seg.classList.add("is-ready"); });
+
+        show("all");
         if (location.hash) { var t = $(location.hash); if (t) t.scrollIntoView(); }
-      }).catch(function () { loadError(grid, "projects"); });
+      }).catch(function () { loadError(wrap, "projects"); });
     },
 
     blog: function () {

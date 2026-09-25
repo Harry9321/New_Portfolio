@@ -50,6 +50,7 @@ Add an entry to the list in `data/projects.js`. Order in the file = order on the
   "id": "my-project",
   "title": "My Project",
   "type": "Personal",
+  "org": "",
   "year": "2026",
   "category": "GenAI · Tooling",
   "summary": "One or two sentences on what it is and why it matters.",
@@ -66,12 +67,12 @@ Add an entry to the list in `data/projects.js`. Order in the file = order on the
 }
 ```
 
-- **type** becomes a filter chip on the Projects page (e.g. `Professional`, `Personal`, `Open source`, `Hackathon`).
+- **type**: `"Work"` for projects built at a company, `"Personal"` for solo/side projects. The Projects page groups them under **Work projects** and **Personal & solo projects**, with All / Work / Personal tabs. The first personal project replaces the "Solo projects are on the way" placeholder.
+- **org**: company name for work projects (shown on the card, e.g. `Multi Commodity Exchange`).
 - **featured: true** shows it on the home page (the first 4 featured are shown).
-- **links**: leave any empty (`""`) and its button is hidden.
+- **links**: every card shows **Live link** and **Demo video** buttons at the bottom. Leave one empty (`""`) and its button is greyed out: marked *Private* on work projects, *Soon* on personal ones. **source** adds a small code button only when filled.
 - **video** accepts YouTube, Vimeo, Loom, Google Drive, or a direct `.mp4` / `.webm` link. It plays in a pop-up player.
 - **image** is optional. Without one, a YouTube video's thumbnail is used; without either, a clean cover is drawn from `kpi`.
-- **confidential: true** shows "Proprietary · details on request" when there are no public links.
 
 **Demo videos:** upload them to YouTube as *Unlisted* (free, fast, no size limit) and paste the link. Keep large video files out of the repo; GitHub Pages has a 1 GB site limit.
 

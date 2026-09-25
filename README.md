@@ -102,13 +102,17 @@ What I worked on:
 
 ![Projects page](docs/screenshots/projects.webp)
 
-Every project is a card showing:
-- its **headline result** (or a screenshot or video thumbnail),
-- a one-line summary and the tech used,
-- **What I did**, a section that expands to show the details,
-- buttons for **Live demo**, **Watch demo** (plays in a pop-up player) and **Source**, where available.
+Projects are split into two groups, with **All / Work / Personal** tabs at the top:
 
-Filter chips at the top sort projects by type (Professional, Personal, …). Four featured projects also appear on the home page.
+- **Work projects**: production systems built at Multi Commodity Exchange.
+- **Personal & solo projects**: things I build on my own, with live links and demo videos.
+
+Every card has the same layout:
+- **top:** a screenshot, video thumbnail or headline result, with a *Work* or *Personal* badge,
+- **middle:** company or "Solo project", the year, a one-line summary, an expandable **What I did** list, and the tech used,
+- **bottom:** **Live link** and **Demo video** buttons (the video plays in a pop-up player). Work systems that aren't public show these as *Private*.
+
+Four featured projects also appear on the home page.
 
 ### 5. Blog
 
