@@ -359,6 +359,121 @@
   }
 
   /* ------------------------------------------------------------------ *
+   * Hero name: split into letters so each one can hop on hover
+   * ------------------------------------------------------------------ */
+  var heroName = $("#hero-name");
+  if (heroName) {
+    var text = heroName.textContent;
+    heroName.setAttribute("aria-label", text);
+    heroName.innerHTML = text.split("").map(function (c, i) {
+      return '<span class="ch' + (c === " " ? " sp" : "") + '" style="--i:' + i + '" aria-hidden="true">' + (c === " " ? "&nbsp;" : esc(c)) + "</span>";
+    }).join("");
+    // Tap on touch screens plays the same animation once.
+    heroName.addEventListener("click", function () {
+      heroName.classList.remove("is-playing");
+      void heroName.offsetWidth;
+      heroName.classList.add("is-playing");
+      setTimeout(function () { heroName.classList.remove("is-playing"); }, 1400);
+    });
+  }
+
+  /* ------------------------------------------------------------------ *
+   * Cursor trail: a light, curvy arrow that follows the mouse
+   * Desktop only (fine pointer); off when reduced motion is requested.
+   * ------------------------------------------------------------------ */
+  (function cursorTrail() {
+    if (reduceMotion || !window.matchMedia("(pointer: fine)").matches) return;
+
+    var canvas = doc.createElement("canvas");
+    canvas.className = "cursor-trail";
+    canvas.setAttribute("aria-hidden", "true");
+    body.appendChild(canvas);
+    var ctx = canvas.getContext("2d");
+    var dpr = 1, W = 0, H = 0;
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    var LIFE = 420;          // ms a point stays in the tail
+    var pts = [];            // {x, y, t}
+    var running = false;
+    var color = "#166a55";
+    var lastColorRead = 0;
+
+    function readColor(now) {
+      if (now - lastColorRead < 500) return;
+      lastColorRead = now;
+      color = getComputedStyle(root).getPropertyValue("--accent").trim() || color;
+    }
+
+    doc.addEventListener("pointermove", function (e) {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      var now = performance.now();
+      var last = pts[pts.length - 1];
+      if (!last || Math.abs(last.x - e.clientX) + Math.abs(last.y - e.clientY) > 2) {
+        pts.push({ x: e.clientX, y: e.clientY, t: now });
+      }
+      if (!running) { running = true; requestAnimationFrame(draw); }
+    }, { passive: true });
+
+    doc.addEventListener("pointerleave", function () { pts.length = 0; });
+
+    function draw(now) {
+      while (pts.length && now - pts[0].t > LIFE) pts.shift();
+      ctx.clearRect(0, 0, W, H);
+
+      if (pts.length < 3) {
+        if (!pts.length) { running = false; return; }
+        requestAnimationFrame(draw);
+        return;
+      }
+
+      readColor(now);
+      ctx.strokeStyle = color;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      // Smooth curve through midpoints; tail fades in and thickens toward the head.
+      var n = pts.length;
+      for (var i = 1; i < n - 1; i++) {
+        var p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1];
+        var k = i / (n - 1);
+        var age = 1 - (now - p1.t) / LIFE;
+        ctx.globalAlpha = Math.max(0, 0.55 * k * age);
+        ctx.lineWidth = 0.6 + 1.9 * k;
+        ctx.beginPath();
+        ctx.moveTo((p0.x + p1.x) / 2, (p0.y + p1.y) / 2);
+        ctx.quadraticCurveTo(p1.x, p1.y, (p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+        ctx.stroke();
+      }
+
+      // Arrowhead at the newest point, pointing along the direction of travel.
+      var head = pts[n - 1], ref = pts[Math.max(0, n - 4)];
+      var dx = head.x - ref.x, dy = head.y - ref.y;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      var fresh = 1 - (now - head.t) / LIFE;
+      if (dist > 4 && fresh > 0) {
+        var a = Math.atan2(dy, dx), size = 9, spread = 0.5;
+        ctx.globalAlpha = 0.7 * fresh;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(head.x - size * Math.cos(a - spread), head.y - size * Math.sin(a - spread));
+        ctx.lineTo(head.x, head.y);
+        ctx.lineTo(head.x - size * Math.cos(a + spread), head.y - size * Math.sin(a + spread));
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(draw);
+    }
+  })();
+
+  /* ------------------------------------------------------------------ *
    * Pages
    * ------------------------------------------------------------------ */
   var pages = {

@@ -15,6 +15,7 @@
   --accent: #166a55;
   --accent-ink: #ffffff;
   --accent-soft: #e3efe9;
+  --accent-2: #2f5fd0;
   --shadow: 0 1px 2px rgba(20, 21, 23, 0.04), 0 8px 24px -12px rgba(20, 21, 23, 0.12);
 
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -40,6 +41,7 @@
   --accent: #5cc4a2;
   --accent-ink: #07130f;
   --accent-soft: #143028;
+  --accent-2: #8aa8ff;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -16px rgba(0, 0, 0, 0.6);
   color-scheme: dark;
 }
@@ -56,6 +58,7 @@
     --accent: #5cc4a2;
     --accent-ink: #07130f;
     --accent-soft: #143028;
+  --accent-2: #8aa8ff;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -16px rgba(0, 0, 0, 0.6);
     color-scheme: dark;
   }
@@ -325,18 +328,44 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1
 
 .hero-hello {
   margin-top: 32px;
-  font-size: clamp(34px, 4.4vw, 58px);
+  font-size: clamp(36px, 4.8vw, 64px);
   font-weight: 400;
   letter-spacing: -0.035em;
   line-height: 1.1;
   color: var(--ink-2);
 }
-.hero-hello strong { font-weight: 700; color: var(--ink); }
+
+/* Name: green → blue colour run, letters hop on hover */
+.name {
+  display: inline-block;
+  font-weight: 700;
+  color: var(--accent);
+  cursor: default;
+  white-space: nowrap;
+}
+.name .ch {
+  display: inline-block;
+  color: color-mix(in oklab, var(--accent-2) calc(var(--i) * 9%), var(--accent));
+  transform-origin: 50% 80%;
+  will-change: transform;
+}
+.name .ch.sp { width: 0.28em; }
+.name:hover .ch,
+.name.is-playing .ch {
+  animation: name-hop 0.7s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  animation-delay: calc(var(--i) * 45ms);
+}
+@keyframes name-hop {
+  0%   { transform: translateY(0) rotate(0); }
+  35%  { transform: translateY(-0.22em) rotate(-6deg) scale(1.08); }
+  65%  { transform: translateY(0.04em) rotate(3deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
 
 .hero-title {
-  margin-top: 16px;
-  max-width: 20ch;
-  font-size: clamp(30px, 4.6vw, 60px);
+  margin-top: 18px;
+  max-width: 24ch;
+  font-size: clamp(26px, 3.4vw, 44px);
   font-weight: 600;
   letter-spacing: -0.04em;
   line-height: 1.02;
@@ -1052,3 +1081,13 @@ svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1
 }
 
 .emoji { font-style: normal; margin-left: 2px; }
+
+/* Cursor trail canvas */
+.cursor-trail {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 45;
+}
