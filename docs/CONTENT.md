@@ -1,6 +1,6 @@
 # Maintainer guide
 
-How the site is built, how to run and deploy it, and how to add projects, blog posts and demo videos. For a tour of the site itself, see the [README](../README.md).
+How the site is built, how to run and deploy it, and how to add projects, blog posts and demo videos. For an overview, see the [README](../README.md).
 
 ## Structure
 
@@ -17,13 +17,13 @@ assets/js/site.js          All behaviour (one file, no dependencies)
 assets/img/                Images: projects/, blog/
 ```
 
-## Deploy for free (GitHub Pages)
+## Hosting
 
-1. In the repo, open **Settings → Pages**.
-2. Under **Build and deployment**, set Source to **Deploy from a branch**, then choose `main` and `/ (root)`. Save.
-3. After a minute or two the site is live at **https://harry9321.github.io/New_Portfolio/**.
+The site is served by **GitHub Pages** from the `main` branch (root folder) at **https://hariom.is-a.dev**. The domain comes from [is-a.dev](https://github.com/is-a-dev/register) via `domains/hariom.json`, which points to `harry9321.github.io`.
 
-Every push to `main` redeploys automatically. For a custom domain later, add it in the same Pages screen. The site uses relative links, so it works at any address.
+- Every push to `main` redeploys automatically within a minute or two.
+- The `CNAME` file in the repo root keeps the custom domain. **Don't delete it**, or the site falls back to `harry9321.github.io/New_Portfolio/`.
+- HTTPS is enforced in **Settings → Pages**.
 
 ## Add your photo
 
