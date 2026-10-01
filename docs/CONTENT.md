@@ -27,7 +27,7 @@ The site is served by **GitHub Pages** from the `main` branch (root folder) at *
 
 ## Add your photo
 
-Save a portrait photo as **`assets/img/hariom-sahu.jpg`** (about 800×1000, 4:5, under 300 KB) and push. It appears in the About section automatically. Until then an "HS" monogram fills the frame.
+Save a portrait photo as **`assets/img/hariom-sahu-office.jpg`** (about 800×1000, 4:5, under 300 KB) and push. It appears in the About section automatically. Until then an "HS" monogram fills the frame.
 
 ## Edit the toolbox
 
